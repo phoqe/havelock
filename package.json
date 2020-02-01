@@ -1,0 +1,14 @@
+{
+  "name": "havelock",
+  "version": "1.0.0",
+  "description": "Extract logins, cookies, and history from Chromium-based web browsers",
+  "main": "index.js",
+  "repository": "https://github.com/phoqe/havelock.git",
+  "author": {
+    "name": "Linus Långberg",
+    "email": "dev@phoqe.me",
+    "url": "https://phoqe.me"
+  },
+  "license": "MIT",
+  "private": false
+}
