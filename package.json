@@ -13,5 +13,8 @@
   "private": false,
   "dependencies": {
     "sqlite3": "^4.1.1"
+  },
+  "devDependencies": {
+    "prettier": "1.19.1"
   }
 }
