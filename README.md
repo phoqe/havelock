@@ -27,8 +27,13 @@ Havelock supports all Chromium-based web browsers that use the user data directo
 
 These are supported out of the box:
 
-- Chromium
-- Google Chrome (Beta, Canary, and Dev)
+| Name                 | Identifier      | Platforms             |
+| -------------------- | --------------- | --------------------- |
+| Chromium             | `chromium`      | Windows, macOS, Linux |
+| Google Chrome        | `chrome`        | Windows, macOS, Linux |
+| Google Chrome Beta   | `chrome-beta`   | Linux                 |
+| Google Chrome Canary | `chrome-canary` | Windows, macOS        |
+| Google Chrome Dev    | `chrome-dev`    | Linux                 |
 
 ## Supported Files
 
