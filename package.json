@@ -2,14 +2,21 @@
   "name": "havelock",
   "version": "1.0.0",
   "description": "Extract logins, cookies, and history from Chromium-based web browsers",
+  "bugs": {
+    "url": "https://github.com/phoqe/rmuif/issues",
+    "email": "dev@phoqe.me"
+  },
+  "license": "MIT",
   "main": "index.js",
-  "repository": "https://github.com/phoqe/havelock.git",
   "author": {
     "name": "Linus Långberg",
     "email": "dev@phoqe.me",
     "url": "https://phoqe.me"
   },
-  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/phoqe/rmuif.git"
+  },
   "private": false,
   "dependencies": {
     "sqlite3": "^4.1.1"
