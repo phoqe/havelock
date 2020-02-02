@@ -1,5 +1,5 @@
 {
-  "name": "havelock",
+  "name": "havelock.js",
   "version": "1.0.0",
   "description": "Extract logins, cookies, and history from Chromium-based web browsers",
   "bugs": {

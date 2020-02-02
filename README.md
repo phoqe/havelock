@@ -7,7 +7,7 @@ Havelock is a module capable of extracting data such as login data, cookies, and
 Havelock provides a simple API that is easy to use, you can for example extract logins from Google Chrome using this code:
 
 ```js
-const havelock = require("havelock");
+const havelock = require("havelock.js");
 
 havelock
   .getData("chrome", "Default", "Login Data")
