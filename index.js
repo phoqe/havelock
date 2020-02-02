@@ -3,22 +3,22 @@ const fs = require("fs");
 const sqlite3 = require("sqlite3");
 
 /**
- * Supported Chromium-based browsers.
+ * Supported Chromium-based web browsers.
  * @type {string[]}
  */
-exports.browsers = [
+const browsers = [
+  "chromium",
   "chrome",
   "chrome-beta",
   "chrome-canary",
-  "chrome-dev",
-  "chromium"
+  "chrome-dev"
 ];
 
 /**
  * Supported files in the user data directory.
  * @type {[string, string, string]}
  */
-exports.files = ["Login Data", "Cookies", "History"];
+const files = ["Login Data", "Cookies", "History"];
 
 /**
  * Helper method to retrieve the user data directory path for different
@@ -27,12 +27,35 @@ exports.files = ["Login Data", "Cookies", "History"];
  * @returns {null|string}
  */
 userDataDirectory = browser => {
-  if (!browser || !exports.browsers.includes(browser)) {
+  if (!browser || !browsers.includes(browser)) {
     return null;
   }
 
   const platform = process.platform;
   let userDataDirectory = null;
+
+  if (browser === "chromium") {
+    if (platform === "win32") {
+      userDataDirectory = path.join(
+        process.env.LOCALAPPDATA,
+        "Chromium",
+        "User Data"
+      );
+    }
+
+    if (platform === "darwin") {
+      userDataDirectory = path.join(
+        process.env.HOME,
+        "Library",
+        "Application Support",
+        "Chromium"
+      );
+    }
+
+    if (platform === "linux") {
+      userDataDirectory = path.join(process.env.HOME, ".config", "chromium");
+    }
+  }
 
   if (browser === "chrome") {
     if (platform === "win32") {
@@ -104,29 +127,6 @@ userDataDirectory = browser => {
     }
   }
 
-  if (browser === "chromium") {
-    if (platform === "win32") {
-      userDataDirectory = path.join(
-        process.env.LOCALAPPDATA,
-        "Chromium",
-        "User Data"
-      );
-    }
-
-    if (platform === "darwin") {
-      userDataDirectory = path.join(
-        process.env.HOME,
-        "Library",
-        "Application Support",
-        "Chromium"
-      );
-    }
-
-    if (platform === "linux") {
-      userDataDirectory = path.join(process.env.HOME, ".config", "chromium");
-    }
-  }
-
   return userDataDirectory;
 };
 
@@ -147,7 +147,7 @@ userDataDirectory = browser => {
  * @param browser {string}
  * @param profile {string}
  * @param file {string}
- * @returns {Promise<unknown>}
+ * @returns {Promise<Array>}
  */
 exports.getData = (browser, profile, file) => {
   return new Promise((resolve, reject) => {
@@ -157,13 +157,13 @@ exports.getData = (browser, profile, file) => {
       return;
     }
 
-    if (!exports.browsers.includes(browser)) {
+    if (!browsers.includes(browser)) {
       reject();
 
       return;
     }
 
-    if (!exports.files.includes(file)) {
+    if (!files.includes(file)) {
       reject();
 
       return;
@@ -227,4 +227,37 @@ exports.getData = (browser, profile, file) => {
       );
     });
   });
+};
+
+/**
+ * Short-hand method for using the Login Data file with `getData()`.
+ *
+ * @param browser {string}
+ * @param profile {string}
+ * @returns {Promise<Array>}
+ */
+exports.getLoginData = (browser, profile) => {
+  return exports.getData(browser, profile, "Login Data");
+};
+
+/**
+ * Short-hand method for using the Cookies file with `getData()`.
+ *
+ * @param browser {string}
+ * @param profile {string}
+ * @returns {Promise<Array>}
+ */
+exports.getCookies = (browser, profile) => {
+  return exports.getData(browser, profile, "Cookies");
+};
+
+/**
+ * Short-hand method for using the History file with `getData()`.
+ *
+ * @param browser {string}
+ * @param profile {string}
+ * @returns {Promise<Array>}
+ */
+exports.getHistory = (browser, profile) => {
+  return exports.getData(browser, profile, "History");
 };
