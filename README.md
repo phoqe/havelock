@@ -1,19 +1,16 @@
 # Havelock
 
-A simple module to extract logins, cookies, and history from Chromium-based web browsers using SQLite.
+Havelock is a module capable of extracting data such as login data, cookies, and history from Chromium-based web browsers such as Google Chrome.
 
 ## Usage
 
-Havelock presents a simple to use API that is robust and easy to get started with.
-In fact, there is only one major method, `getData(browser, profile, file)`, that is extended with shortcut methods.
-
-Here is an example of how to retrieve logins in the Google Chrome web browser:
+Havelock presents a simple API that is easy to use, you can for example extract logins from Google Chrome using this code:
 
 ```js
 const havelock = require("havelock");
 
 havelock
-  .getData("chrome", "Profile 1", "Login Data")
+  .getData("chrome", "Default", "Login Data")
   .then(value => {
     console.log(value);
   })
@@ -22,7 +19,22 @@ havelock
   });
 ```
 
-You can find supported web browsers and files using `havelock.browsers` and `havelock.files`.
+This code assumes that Google Chrome is installed, your profile is `Default`, and the data exists in the file `Login Data`.
+
+## Supported Web Browsers
+
+Havelock supports all Chromium-based web browsers that use the user data directory for storing user data.
+
+These are supported out of the box:
+
+- Chromium
+- Google Chrome (Beta, Canary, and Dev)
+
+## Supported Files
+
+- Login Data
+- Cookies
+- History
 
 ## License
 
