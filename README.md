@@ -19,7 +19,7 @@ havelock
   });
 ```
 
-This code assumes that Google Chrome is installed, your profile is `Default`, and the data exists in the file `Login Data`.
+This code assumes that Google Chrome is installed, your profile is `Default`, and data exists in the file `Login Data`.
 
 ## Supported Web Browsers
 
