@@ -2,6 +2,16 @@
 
 Havelock is a module capable of extracting data such as login data, cookies, and history from Chromium-based web browsers such as Google Chrome.
 
+## Installation
+
+You can use npm or Yarn to install Havelock, we recommend using Yarn:
+
+```
+yarn add havelock.js
+```
+
+That’s it! Get started using the section below.
+
 ## Usage
 
 Havelock provides a simple API that is easy to use, you can for example extract logins from Google Chrome using this code:
