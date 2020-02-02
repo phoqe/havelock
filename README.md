@@ -4,7 +4,7 @@ Havelock is a module capable of extracting data such as login data, cookies, and
 
 ## Usage
 
-Havelock presents a simple API that is easy to use, you can for example extract logins from Google Chrome using this code:
+Havelock provides a simple API that is easy to use, you can for example extract logins from Google Chrome using this code:
 
 ```js
 const havelock = require("havelock");
@@ -35,11 +35,8 @@ These are supported out of the box:
 | Google Chrome Canary | `chrome-canary` | Windows, macOS        |
 | Google Chrome Dev    | `chrome-dev`    | Linux                 |
 
-## Supported Files
-
-- Login Data
-- Cookies
-- History
+If your web browser isn’t listed here, you can use the `getDataFromPath(path, table)` function.
+You need to know the full path to the file and which table to access.
 
 ## License
 

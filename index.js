@@ -230,6 +230,55 @@ exports.getData = (browser, profile, file) => {
 };
 
 /**
+ * Extracts data from a path. It needs to be the location of a file.
+ *
+ * You need to know the `table` beforehand, e.g. for Login Data it is `logins`.
+ *
+ * @param path {string}
+ * @param table {string}
+ * @returns {Promise<Array>}
+ */
+exports.getDataFromPath = (path, table) => {
+  return new Promise((resolve, reject) => {
+    if (!path) {
+      reject();
+
+      return;
+    }
+
+    fs.access(path, fs.constants.R_OK, error => {
+      if (error) {
+        reject(error);
+
+        return;
+      }
+
+      const database = new sqlite3.Database(
+        path,
+        sqlite3.OPEN_READONLY,
+        error => {
+          if (error) {
+            reject(error);
+
+            return;
+          }
+
+          database.all(`SELECT * FROM ${table}`, (error, rows) => {
+            if (error) {
+              reject(error);
+
+              return;
+            }
+
+            resolve(rows);
+          });
+        }
+      );
+    });
+  });
+};
+
+/**
  * Short-hand method for using the Login Data file with `getData()`.
  *
  * @param browser {string}
