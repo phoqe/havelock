@@ -4,13 +4,13 @@
   "description": "Extract logins, cookies, and history from Chromium-based web browsers",
   "bugs": {
     "url": "https://github.com/phoqe/rmuif/issues",
-    "email": "dev@phoqe.me"
+    "email": "phoqe@phoqe.dev"
   },
   "license": "MIT",
   "main": "index.js",
   "author": {
     "name": "Linus Långberg",
-    "email": "dev@phoqe.me",
+    "email": "phoqe@phoqe.dev",
     "url": "https://phoqe.me"
   },
   "repository": {
