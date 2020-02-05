@@ -30,7 +30,7 @@ const files = ["Login Data", "Cookies", "History"];
  * @returns {null|string} Returns `null` if the browser isn’t supported. Otherwise, returns the path to the user data
  * directory.
  */
-userDataDirectory = browser => {
+const userDataDirectory = browser => {
   if (!browser || !browsers.includes(browser)) {
     return null;
   }
