@@ -4,6 +4,7 @@ const sqlite3 = require("sqlite3");
 
 /**
  * Supported Chromium-based web browsers.
+ *
  * @type {string[]}
  */
 const browsers = [
@@ -16,15 +17,18 @@ const browsers = [
 
 /**
  * Supported files in the user data directory.
- * @type {[string, string, string]}
+ *
+ * @type {string[]}
  */
 const files = ["Login Data", "Cookies", "History"];
 
 /**
  * Helper method to retrieve the user data directory path for different
  * browsers and platforms.
- * @param browser {string}
- * @returns {null|string}
+ *
+ * @param browser {string} The browser to find.
+ * @returns {null|string} Returns `null` if the browser isn’t supported. Otherwise, returns the path to the user data
+ * directory.
  */
 userDataDirectory = browser => {
   if (!browser || !browsers.includes(browser)) {
@@ -144,10 +148,10 @@ userDataDirectory = browser => {
  * The `file` needs to be a supported file, consult the exported `files` array
  * for all supported files.
  *
- * @param browser {string}
- * @param profile {string}
- * @param file {string}
- * @returns {Promise<Array>}
+ * @param browser {string} The browser to use when retrieving the user data directory path.
+ * @param profile {string} The profile to fetch data from, usually `Default` or something like `Profile 1`.
+ * @param file {string} The file to fetch data from, e.g. Login Data.
+ * @returns {Promise<Array>} Promise is rejected if the file is inaccessible.
  */
 exports.getData = (browser, profile, file) => {
   return new Promise((resolve, reject) => {
@@ -234,9 +238,9 @@ exports.getData = (browser, profile, file) => {
  *
  * You need to know the `table` beforehand, e.g. for Login Data it is `logins`.
  *
- * @param path {string}
- * @param table {string}
- * @returns {Promise<Array>}
+ * @param path {string} The full path to the file in the user data directory.
+ * @param table {string} The table used when extracting data with SQLite, e.g. for Login Data it’s `logins`.
+ * @returns {Promise<Array>} Rejected if the file is inaccessible.
  */
 exports.getDataFromPath = (path, table) => {
   return new Promise((resolve, reject) => {
@@ -281,9 +285,9 @@ exports.getDataFromPath = (path, table) => {
 /**
  * Short-hand method for using the Login Data file with `getData()`.
  *
- * @param browser {string}
- * @param profile {string}
- * @returns {Promise<Array>}
+ * @param browser {string} The browser to use when retrieving the user data directory path.
+ * @param profile {string} The profile to fetch data from, usually `Default` or something like `Profile 1`.
+ * @returns {Promise<Array>} Promise is rejected if the file is inaccessible.
  */
 exports.getLoginData = (browser, profile) => {
   return exports.getData(browser, profile, "Login Data");
@@ -292,9 +296,9 @@ exports.getLoginData = (browser, profile) => {
 /**
  * Short-hand method for using the Cookies file with `getData()`.
  *
- * @param browser {string}
- * @param profile {string}
- * @returns {Promise<Array>}
+ * @param browser {string} The browser to use when retrieving the user data directory path.
+ * @param profile {string} The profile to fetch data from, usually `Default` or something like `Profile 1`.
+ * @returns {Promise<Array>} Promise is rejected if the file is inaccessible.
  */
 exports.getCookies = (browser, profile) => {
   return exports.getData(browser, profile, "Cookies");
@@ -303,9 +307,9 @@ exports.getCookies = (browser, profile) => {
 /**
  * Short-hand method for using the History file with `getData()`.
  *
- * @param browser {string}
- * @param profile {string}
- * @returns {Promise<Array>}
+ * @param browser {string} The browser to use when retrieving the user data directory path.
+ * @param profile {string} The profile to fetch data from, usually `Default` or something like `Profile 1`.
+ * @returns {Promise<Array>} Promise is rejected if the file is inaccessible.
  */
 exports.getHistory = (browser, profile) => {
   return exports.getData(browser, profile, "History");
