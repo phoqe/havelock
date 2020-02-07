@@ -1,67 +1,83 @@
 # Havelock
 
-Havelock is a simple Node package capable of extracting data such as logins, cookies, and URLs from Chromium-based web browsers such as Google Chrome.
+Havelock is a simple Node.js package that is capable of extracting data such as logins, cookies, and history from web browsers based on Chromium, e.g. Google Chrome and Brave
+
+It’s a simple yet extensible API that can be applied for all Chromium based browsers of the platforms Windows, macOS, and Linux, so long as the user data storage mechanism from Chromium persists through the vendor customization.
+
+## Default web browsers
+
+All Chromium based browsers are supported implicitly. However, the browsers listed here are supported explicitly. What this means is that these browsers have detailed information about them readily available, like paths and password and salt combinations for string decryption.
+
+| Name                 | API            | Platform(s)           |
+| -------------------- | -------------- | --------------------- |
+| Chromium             | `chromium`     | Windows, macOS, Linux |
+| Google Chrome Stable | `chrome`       | Windows, macOS, Linux |
+| Google Chrome Beta   | `chromeBeta`   | Linux                 |
+| Google Chrome Dev    | `chromeDev`    | Linux                 |
+| Google Chrome Canary | `chromeCanary` | Windows, macOS        |
 
 ## Installation
 
-The module can be installed via Yarn with one command:
+Havelock is very easy to install, just make sure you have Node.js installed and you’re ready to go. You can use your package manager of choice when installing Havelock:
+
+### npm
+
+```
+npm install havelock.js
+```
+
+### yarn
 
 ```
 yarn add havelock.js
 ```
 
-That’s it, get started using the section below.
-
 ## Usage
 
-Havelock provides a simple API that is easy to use, you can for example extract logins from Google Chrome using this code:
+### Extracting data
+
+Using Havelock is also easy, with its idiomatic API you can get started in no time.
+
+Here’s an example of retrieving logins from the Login Data file in the Default profile in Google Chrome:
 
 ```js
 const havelock = require("havelock.js");
 
-havelock
-  .getData("chrome", "Default", "Login Data")
+const explorer = havelock.explorer;
+const browser = havelock.browser;
+
+explorer
+  .getDataFromUserDataDirectoryFile(
+    browser.chrome,
+    "Default",
+    "Login Data",
+    "logins"
+  )
   .then(value => {
     console.log(value);
   })
   .catch(reason => {
-    console.log(reason);
+    console.error(reason);
   });
 ```
 
-This code assumes that Google Chrome is installed, your profile is `Default`, and data exists in the file `Login Data`.
-
-There are also short-hand methods based on files of interest, like:
+There are also shortcuts available for files of interest, you can achieve the same result using this shorter function:
 
 ```js
 const havelock = require("havelock.js");
 
-havelock
-  .getLoginData("chrome", "Default")
+const explorer = havelock.explorer;
+const browser = havelock.browser;
+
+explorer
+  .getLoginsFromLoginDataFile(browser.chrome, "Profile 1")
   .then(value => {
     console.log(value);
   })
   .catch(reason => {
-    console.log(reason);
+    console.error(reason);
   });
 ```
-
-## Supported Web Browsers
-
-Havelock supports all Chromium-based web browsers that use the user data directory for storing user data.
-
-These are supported out of the box:
-
-| Name                 | Identifier      | Platform(s)           |
-| -------------------- | --------------- | --------------------- |
-| Chromium             | `chromium`      | Windows, macOS, Linux |
-| Google Chrome        | `chrome`        | Windows, macOS, Linux |
-| Google Chrome Beta   | `chrome-beta`   | Linux                 |
-| Google Chrome Canary | `chrome-canary` | Windows, macOS        |
-| Google Chrome Dev    | `chrome-dev`    | Linux                 |
-
-If your web browser isn’t listed here, you can use the `getDataFromPath()` function.
-You need to know the full path to the file and which table to access.
 
 ## License
 
