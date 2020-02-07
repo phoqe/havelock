@@ -34,9 +34,9 @@ yarn add havelock.js
 
 ## Usage
 
-### Extracting data
-
 Using Havelock is also easy, with its idiomatic API you can get started in no time.
+
+### Extracting data
 
 Here’s an example of retrieving logins from the Login Data file in the Default profile in Google Chrome:
 
