@@ -1,7 +1,7 @@
+const crypto = require("crypto");
 const { exec } = require("child_process");
 
 const keytar = require("keytar");
-const CryptoJS = require("crypto-js");
 
 const encryptionVersionPrefix = "v10";
 const salt = "saltysalt";
@@ -43,7 +43,7 @@ const getPassword = browser => {
  * Access to Keychain is required to create an encryption key.
  *
  * @param browser
- * @returns {Promise<WordArray>}
+ * @returns {Promise<string>}
  */
 const createEncryptionKey = browser => {
   return new Promise((resolve, reject) => {
@@ -61,17 +61,15 @@ const createEncryptionKey = browser => {
           return;
         }
 
-        const encryptionKey = CryptoJS.PBKDF2(password, salt, {
-          iterations: 1003
+        crypto.pbkdf2(password, salt, 1003, 16, "sha1", (err, derivedKey) => {
+          if (err) {
+            reject(err);
+
+            return;
+          }
+
+          resolve(derivedKey.toString("hex"));
         });
-
-        if (!encryptionKey) {
-          reject();
-
-          return;
-        }
-
-        resolve(encryptionKey);
       })
       .catch(reason => {
         reject(reason);
@@ -111,7 +109,7 @@ exports.decryptData = (browser, data) => {
         }
 
         const iv = "20".repeat(aes128BlockSize);
-        const command = `openssl enc -AES-128-CBC -d -a -iv '${iv}' -K '${encryptionKey.toString()}' <<< ${Buffer.from(
+        const command = `openssl enc -AES-128-CBC -d -a -iv '${iv}' -K '${encryptionKey}' <<< ${Buffer.from(
           data
         )
           .toString("base64")
