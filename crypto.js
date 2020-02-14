@@ -5,7 +5,11 @@ const keytar = require("keytar");
 
 const encryptionVersionPrefix = "v10";
 const salt = "saltysalt";
+const iterations = 1003;
+const keylen = 16;
+const digest = "sha1";
 const aes128BlockSize = 16;
+const iv = "20".repeat(aes128BlockSize);
 
 /**
  * Retrieves the password used in Chromium’s cryptography logic, i.e. when encrypting and decrypting strings.
@@ -61,15 +65,22 @@ const createEncryptionKey = browser => {
           return;
         }
 
-        crypto.pbkdf2(password, salt, 1003, 16, "sha1", (err, derivedKey) => {
-          if (err) {
-            reject(err);
+        crypto.pbkdf2(
+          password,
+          salt,
+          iterations,
+          keylen,
+          digest,
+          (err, derivedKey) => {
+            if (err) {
+              reject(err);
 
-            return;
+              return;
+            }
+
+            resolve(derivedKey.toString("hex"));
           }
-
-          resolve(derivedKey.toString("hex"));
-        });
+        );
       })
       .catch(reason => {
         reject(reason);
@@ -108,7 +119,6 @@ exports.decryptData = (browser, data) => {
           return;
         }
 
-        const iv = "20".repeat(aes128BlockSize);
         const command = `openssl enc -AES-128-CBC -d -a -iv '${iv}' -K '${encryptionKey}' <<< ${Buffer.from(
           data
         )
