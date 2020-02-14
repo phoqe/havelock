@@ -1,15 +1,10 @@
 const crypto = require("crypto");
-const { exec } = require("child_process");
 
 const keytar = require("keytar");
 
 const encryptionVersionPrefix = "v10";
 const salt = "saltysalt";
-const iterations = 1003;
-const keylen = 16;
-const digest = "sha1";
 const aes128BlockSize = 16;
-const iv = "20".repeat(aes128BlockSize);
 
 /**
  * Retrieves the password used in Chromium’s cryptography logic, i.e. when encrypting and decrypting strings.
@@ -47,7 +42,7 @@ const getPassword = browser => {
  * Access to Keychain is required to create an encryption key.
  *
  * @param browser {object}
- * @returns {Promise<string>}
+ * @returns {Promise<Buffer>}
  */
 const createEncryptionKey = browser => {
   return new Promise((resolve, reject) => {
@@ -65,22 +60,15 @@ const createEncryptionKey = browser => {
           return;
         }
 
-        crypto.pbkdf2(
-          password,
-          salt,
-          iterations,
-          keylen,
-          digest,
-          (err, derivedKey) => {
-            if (err) {
-              reject(err);
+        crypto.pbkdf2(password, salt, 1003, 16, "sha1", (err, derivedKey) => {
+          if (err) {
+            reject(err);
 
-              return;
-            }
-
-            resolve(derivedKey.toString("hex"));
+            return;
           }
-        );
+
+          resolve(derivedKey);
+        });
       })
       .catch(reason => {
         reject(reason);
@@ -119,21 +107,24 @@ exports.decryptData = (browser, data) => {
           return;
         }
 
-        const command = `openssl enc -AES-128-CBC -d -a -iv '${iv}' -K '${encryptionKey}' <<< ${Buffer.from(
-          data
-        )
-          .toString("base64")
-          .substring(encryptionVersionPrefix.length + 1)}`;
+        const iv = Buffer.alloc(aes128BlockSize, "20", "hex");
 
-        exec(command, (error, stdout) => {
-          if (error) {
-            reject(error);
+        const decipher = crypto.createDecipheriv(
+          "AES-128-CBC",
+          encryptionKey,
+          iv
+        );
 
-            return;
-          }
+        const ciphertext = Buffer.from(data).toString("base64");
+        const rawCiphertext = ciphertext.substring(
+          encryptionVersionPrefix.length + 1
+        );
 
-          resolve(stdout);
-        });
+        let plaintext = decipher.update(rawCiphertext, "base64", "utf8");
+
+        plaintext += decipher.final("utf8");
+
+        resolve(plaintext);
       })
       .catch(reason => {
         reject(reason);
