@@ -1,3 +1,5 @@
+const { exec } = require("child_process");
+
 const keytar = require("keytar");
 const CryptoJS = require("crypto-js");
 
@@ -12,7 +14,7 @@ const aes128BlockSize = 16;
  * The `browser` parameter decides which service and account to use, e.g. for Chromium it’s Chromium Safe Storage and
  * Chromium.
  *
- * @param browser
+ * @param browser {object}
  * @returns {Promise<string>}
  */
 const getPassword = browser => {
@@ -23,22 +25,8 @@ const getPassword = browser => {
       return null;
     }
 
-    let service, account;
-
-    switch (browser) {
-      case "chromium":
-        service = "Chromium Safe Storage";
-        account = "Chromium";
-        break;
-
-      case "chrome":
-        service = "Chrome Safe Storage";
-        account = "Chrome";
-        break;
-    }
-
     keytar
-      .getPassword(service, account)
+      .getPassword(browser.keychain.service, browser.keychain.account)
       .then(password => {
         resolve(password);
       })
@@ -91,16 +79,25 @@ const createEncryptionKey = browser => {
   });
 };
 
-exports.decryptString = (browser, ciphertext) => {
+/**
+ * Decrypts data in a Buffer to a string using 128 bit AES with CBC through OpenSSL.
+ *
+ * This function assumes that `openssl` is installed in the calling environment.
+ *
+ * @param browser {object}
+ * @param data {Buffer}
+ * @returns {Promise<string>}
+ */
+exports.decryptData = (browser, data) => {
   return new Promise((resolve, reject) => {
-    if (!browser || !ciphertext) {
+    if (!browser || !data) {
       reject();
 
       return;
     }
 
-    if (ciphertext.indexOf(encryptionVersionPrefix) !== 0) {
-      resolve(ciphertext);
+    if (data.toString().indexOf(encryptionVersionPrefix) !== 0) {
+      resolve(data);
 
       return;
     }
@@ -113,13 +110,25 @@ exports.decryptString = (browser, ciphertext) => {
           return;
         }
 
-        const rawCiphertext = ciphertext.substring(
-          encryptionVersionPrefix.length
-        );
-        const iv = " ".repeat(aes128BlockSize);
+        const iv = "20".repeat(aes128BlockSize);
+        const command = `openssl enc -AES-128-CBC -d -a -iv '${iv}' -K '${encryptionKey.toString()}' <<< ${Buffer.from(
+          data
+        )
+          .toString("base64")
+          .substring(encryptionVersionPrefix.length + 1)}`;
+
+        exec(command, (error, stdout) => {
+          if (error) {
+            reject(error);
+
+            return;
+          }
+
+          resolve(stdout);
+        });
       })
       .catch(reason => {
-        console.log(reason);
+        reject(reason);
       });
   });
 };
