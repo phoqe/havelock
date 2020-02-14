@@ -114,6 +114,4 @@ explorer
   });
 ```
 
-## License
-
-[MIT License](https://github.com/phoqe/havelock/blob/master/LICENSE.md)
+## [License](https://github.com/phoqe/havelock/blob/master/LICENSE.md)
