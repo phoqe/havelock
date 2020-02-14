@@ -84,7 +84,7 @@ explorer
 Havelock supports decrypting data such as passwords and credit cards:
 
 ```js
-const havelock = require("./index");
+const havelock = require("havelock.js");
 
 const explorer = havelock.explorer;
 const browser = havelock.browser;
