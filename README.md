@@ -23,13 +23,13 @@ Havelock is very easy to install, just make sure you have Node.js installed and 
 ### npm
 
 ```
-npm install havelock.js
+npm install havelock
 ```
 
 ### yarn
 
 ```
-yarn add havelock.js
+yarn add havelock
 ```
 
 ## Usage
@@ -41,7 +41,7 @@ Using Havelock is also easy, with its idiomatic API you can get started in no ti
 Here’s an example of retrieving logins from the Login Data file in the Default profile in Google Chrome:
 
 ```js
-const havelock = require("havelock.js");
+const havelock = require("havelock");
 
 const explorer = havelock.explorer;
 const browser = havelock.browser;
@@ -64,7 +64,7 @@ explorer
 There are also shortcuts available for files of interest, you can achieve the same result using this shorter function:
 
 ```js
-const havelock = require("havelock.js");
+const havelock = require("havelock");
 
 const explorer = havelock.explorer;
 const browser = havelock.browser;
@@ -84,7 +84,7 @@ explorer
 Havelock supports decrypting data such as passwords and credit cards:
 
 ```js
-const havelock = require("havelock.js");
+const havelock = require("havelock");
 
 const explorer = havelock.explorer;
 const browser = havelock.browser;
