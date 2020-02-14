@@ -1,5 +1,4 @@
 const crypto = require("crypto");
-
 const keytar = require("keytar");
 
 const encryptionVersionPrefix = "v10";
