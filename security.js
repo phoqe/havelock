@@ -1,8 +1,17 @@
-// Windows
-exports.win32 = require("./security/win32");
+if (process.platform === "win32") {
+  module.exports = require("./security/win32");
 
-// macOS
-exports.darwin = require("./security/darwin");
+  return;
+}
 
-// Linux
-exports.linux = require("./security/linux");
+if (process.platform === "darwin") {
+  module.exports = require("./security/darwin");
+
+  return;
+}
+
+if (process.platform === "linux") {
+  module.exports = require("./security/linux");
+
+  return;
+}

@@ -88,7 +88,7 @@ const havelock = require("havelock");
 
 const explorer = havelock.explorer;
 const browser = havelock.browser;
-const crypto = havelock.crypto;
+const security = havelock.security;
 
 explorer
   .getDataFromUserDataDirectoryFile(
@@ -99,7 +99,7 @@ explorer
   )
   .then(logins => {
     logins.forEach(login => {
-      crypto
+      security
         .decryptData(browser.chrome, login.password_value)
         .then(value => {
           console.log(value);
