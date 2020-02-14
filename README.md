@@ -36,7 +36,7 @@ yarn add havelock.js
 
 Using Havelock is also easy, with its idiomatic API you can get started in no time.
 
-### Extracting data
+### Extract data
 
 Here’s an example of retrieving logins from the Login Data file in the Default profile in Google Chrome:
 
@@ -70,9 +70,44 @@ const explorer = havelock.explorer;
 const browser = havelock.browser;
 
 explorer
-  .getLoginsFromLoginDataFile(browser.chrome, "Profile 1")
+  .getLoginsFromLoginDataFile(browser.chrome, "Default")
   .then(value => {
     console.log(value);
+  })
+  .catch(reason => {
+    console.error(reason);
+  });
+```
+
+### Decrypt data
+
+Havelock supports decrypting data such as passwords and credit cards:
+
+```js
+const havelock = require("./index");
+
+const explorer = havelock.explorer;
+const browser = havelock.browser;
+const crypto = havelock.crypto;
+
+explorer
+  .getDataFromUserDataDirectoryFile(
+    browser.chrome,
+    "Default",
+    "Login Data",
+    "logins"
+  )
+  .then(logins => {
+    logins.forEach(login => {
+      crypto
+        .decryptData(browser.chrome, login.password_value)
+        .then(value => {
+          console.log(value);
+        })
+        .catch(reason => {
+          console.error(reason);
+        });
+    });
   })
   .catch(reason => {
     console.error(reason);
