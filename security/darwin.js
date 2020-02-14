@@ -26,7 +26,7 @@ const getPassword = browser => {
     if (!browser) {
       reject();
 
-      return null;
+      return;
     }
 
     keytar
@@ -46,7 +46,7 @@ const getPassword = browser => {
  *
  * Access to Keychain is required to create an encryption key.
  *
- * @param browser
+ * @param browser {object}
  * @returns {Promise<string>}
  */
 const createEncryptionKey = browser => {
