@@ -116,6 +116,6 @@ explorer
 
 ## Attribution
 
-David Sheldrick ([@ds300](https://github.com/ds300)) for transferring ownership of the `havelock` package name to me on npm.
+Thank you to David Sheldrick ([@ds300](https://github.com/ds300)) for passing on the package name to me on npm.
 
 ## [License](https://github.com/phoqe/havelock/blob/master/LICENSE.md)
