@@ -26,5 +26,10 @@
     "husky": "^4.2.1",
     "prettier": "1.19.1",
     "pretty-quick": "^2.0.1"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
   }
 }
