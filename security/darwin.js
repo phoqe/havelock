@@ -76,9 +76,7 @@ const createEncryptionKey = browser => {
 };
 
 /**
- * Decrypts data in a Buffer to a string using 128 bit AES with CBC through OpenSSL.
- *
- * This function assumes that `openssl` is installed in the calling environment.
+ * Decrypts data in a Buffer to a string using 128 bit AES with CBC.
  *
  * @param browser {object}
  * @param data {Buffer}
