@@ -15,6 +15,7 @@ All Chromium based browsers are supported implicitly. However, the browsers list
 | Google Chrome Beta   | `chromeBeta`   | Linux                 |
 | Google Chrome Dev    | `chromeDev`    | Linux                 |
 | Google Chrome Canary | `chromeCanary` | Windows, macOS        |
+| Brave Stable         | `brave`        | Windows, macOS, Linux |
 
 ## Installation
 
