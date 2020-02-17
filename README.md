@@ -2,11 +2,11 @@
 
 Havelock is a simple Node.js package that is capable of extracting data such as logins, cookies, and history from web browsers based on Chromium, e.g. Google Chrome and Brave.
 
-It’s a simple yet extensible API that can be applied for all Chromium based browsers of the platforms Windows, macOS, and Linux, so long as the user data storage mechanism from Chromium persists through the vendor customization.
+It’s a simple yet extensible API that can be applied for all Chromium-based browsers of the platforms Windows, macOS, and Linux, so long as the user data storage mechanism from Chromium persists through the vendor customization.
 
 ## Default web browsers
 
-All Chromium based browsers are supported implicitly. However, the browsers listed here are supported explicitly. What this means is that these browsers have detailed information about them readily available, like paths and password and salt combinations for string decryption.
+All Chromium-based browsers are supported implicitly. However, the browsers listed here are supported explicitly. What this means is that these browsers have detailed information about them readily available, like paths and password and salt combinations for string decryption.
 
 | Name                 | API            | Platform(s)           |
 | -------------------- | -------------- | --------------------- |
