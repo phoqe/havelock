@@ -80,9 +80,9 @@ explorer
   });
 ```
 
-### Decrypt data
+### Decrypt data (macOS only)
 
-Havelock supports decrypting data such as passwords and credit cards:
+Havelock supports decrypting data such as passwords and credit cards, note that this is a macOS only feature at the moment, Windows and Linux support will arrive momentarily.
 
 ```js
 const havelock = require("havelock");
@@ -117,6 +117,6 @@ explorer
 
 ## Attribution
 
-Thank you to David Sheldrick ([@ds300](https://github.com/ds300)) for passing on the package name to me on npm.
+Thank you to David Sheldrick ([ds300](https://github.com/ds300)) for passing on the package name.
 
 ## [License](https://github.com/phoqe/havelock/blob/master/LICENSE.md)
