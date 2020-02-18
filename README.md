@@ -17,6 +17,14 @@ All Chromium-based browsers are supported implicitly. However, the browsers list
 | Google Chrome Canary | `chromeCanary` | Windows, macOS        |
 | Brave Stable         | `brave`        | Windows, macOS, Linux |
 
+## String decryption
+
+| Platform | Algorithm   | Supported |
+| -------- | ----------- | --------- |
+| Windows  | AES-256-GCM | No        |
+| macoS    | AES-128-CBC | Yes       |
+| Linux    | AES-128-CBC | No        |
+
 ## Installation
 
 Havelock is very easy to install, just make sure you have Node.js installed and you’re ready to go. You can use your package manager of choice when installing Havelock:
