@@ -17,7 +17,9 @@ All Chromium-based browsers are supported implicitly. However, the browsers list
 | Google Chrome Canary | `chromeCanary` | Windows, macOS        |
 | Brave Stable         | `brave`        | Windows, macOS, Linux |
 
-## String decryption
+## Decryption
+
+Havelock supports the decryption of encrypted data, e.g. passwords and credit cards. There is only logic in place for macOS at the moment but Windows and Linux support is planned and will arrive momentarily.
 
 | Platform | Algorithm   | Supported |
 | -------- | ----------- | --------- |
