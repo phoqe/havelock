@@ -6,7 +6,7 @@ It’s a simple yet extensible API that can be applied for all Chromium-based br
 
 ## Default web browsers
 
-All Chromium-based browsers are supported implicitly. However, the browsers listed here are supported explicitly. What this means is that these browsers have detailed information about them readily available, like paths and password and salt combinations for string decryption.
+All Chromium-based browsers are supported implicitly. However, the browsers listed here are supported explicitly. What this means is that these browsers have verified information about them readily available through the API, like paths and password and salt combinations for string decryption.
 
 | Name                 | API            | Platform(s)           |
 | -------------------- | -------------- | --------------------- |
@@ -19,13 +19,13 @@ All Chromium-based browsers are supported implicitly. However, the browsers list
 
 ## Decryption
 
-Havelock supports the decryption of encrypted data, e.g. passwords and credit cards. There is only logic in place for macOS at the moment but Windows and Linux support is planned and will arrive momentarily.
+Havelock supports decryption of encrypted passwords and credit cards numbers. There is only macOS support at the moment but more platforms will be added soon.
 
-| Platform | Algorithm   | Supported |
-| -------- | ----------- | --------- |
-| Windows  | AES-256-GCM | No        |
-| macoS    | AES-128-CBC | Yes       |
-| Linux    | AES-128-CBC | No        |
+| Platform | Algorithm   | Supported | Source                                                                                                                  |
+| -------- | ----------- | --------- | ----------------------------------------------------------------------------------------------------------------------- |
+| Windows  | AES-256-GCM | No        | [`os_crypt_win.cc`](https://source.chromium.org/chromium/chromium/src/+/master:components/os_crypt/os_crypt_win.cc)     |
+| macoS    | AES-128-CBC | Yes       | [`os_crypt_mac.mm`](https://source.chromium.org/chromium/chromium/src/+/master:components/os_crypt/os_crypt_mac.mm)     |
+| Linux    | AES-128-CBC | No        | [`os_crypt_linux.cc`](https://source.chromium.org/chromium/chromium/src/+/master:components/os_crypt/os_crypt_linux.cc) |
 
 ## Installation
 
@@ -49,7 +49,7 @@ Using Havelock is also easy, with its idiomatic API you can get started in no ti
 
 ### Extract data
 
-Here’s an example of retrieving logins from the Login Data file in the Default profile in Google Chrome:
+Here’s an example of retrieving data from the `logins` table in the `Login Data` file of the `Default` profile in Google Chrome:
 
 ```js
 const havelock = require("havelock");
@@ -90,9 +90,9 @@ explorer
   });
 ```
 
-### Decrypt data (macOS only)
+### Decrypt data
 
-Havelock supports decrypting data such as passwords and credit cards, note that this is a macOS only feature at the moment, Windows and Linux support will arrive momentarily.
+Havelock supports decryption of encrypted passwords and credit cards numbers, here’s an example of decrypting a password from the `logins` table in the `Login Data` file of the `Default` profile of Google Chrome:
 
 ```js
 const havelock = require("havelock");
