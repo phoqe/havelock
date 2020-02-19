@@ -2,6 +2,16 @@
   "name": "havelock",
   "version": "1.0.4",
   "description": "Extract logins, cookies, and history from Chromium-based web browsers",
+  "keywords": [
+    "chromium",
+    "chrome",
+    "google",
+    "web",
+    "browser",
+    "password",
+    "cookies",
+    "history"
+  ],
   "bugs": {
     "url": "https://github.com/phoqe/havelock/issues",
     "email": "phoqe@phoqe.dev"
