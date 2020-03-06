@@ -6,3 +6,6 @@ exports.chrome = require("./browsers/chrome");
 exports.chromeBeta = require("./browsers/chrome-beta");
 exports.chromeDev = require("./browsers/chrome-dev");
 exports.chromeCanary = require("./browsers/chrome-canary");
+
+// Brave
+exports.brave = require("./browsers/brave");
