@@ -1,12 +1,10 @@
 # Havelock
 
-Havelock is a simple Node.js package that is capable of extracting data such as logins, cookies, and history from web browsers based on Chromium, e.g. Google Chrome and Brave.
+Havelock is a simple Node.js package capable of extracting data such as accounts, cookies, and history from web browsers based on Chromium, e.g., Google Chrome and Brave.
 
-It’s a simple yet extensible API that can be applied for all Chromium-based browsers of the platforms Windows, macOS, and Linux, so long as the user data storage mechanism from Chromium persists through the vendor customization.
+## Verified web browsers
 
-## Default web browsers
-
-All Chromium-based browsers are supported implicitly. However, the browsers listed here are supported explicitly. What this means is that these browsers have verified information about them readily available through the API, like paths and password and salt combinations for string decryption.
+Every Chromium-based web browser using the same storage mechanism for user data is supported. These are the web browsers I’ve tested:
 
 | Name                 | API            | Platform(s)           |
 | -------------------- | -------------- | --------------------- |
@@ -17,9 +15,9 @@ All Chromium-based browsers are supported implicitly. However, the browsers list
 | Google Chrome Canary | `chromeCanary` | Windows, macOS        |
 | Brave Stable         | `brave`        | Windows, macOS, Linux |
 
-## Decryption
+## String decryption
 
-Havelock supports decryption of encrypted passwords and credit cards numbers. There is only macOS support at the moment but more platforms will be added soon.
+You can decrypt strings retrieved from your web browser using Havelock. Currently, there is only support for macOS.
 
 | Platform | Algorithm   | Supported | Source                                                                                                                  |
 | -------- | ----------- | --------- | ----------------------------------------------------------------------------------------------------------------------- |
@@ -27,27 +25,15 @@ Havelock supports decryption of encrypted passwords and credit cards numbers. Th
 | macOS    | AES-128-CBC | Yes       | [`os_crypt_mac.mm`](https://source.chromium.org/chromium/chromium/src/+/master:components/os_crypt/os_crypt_mac.mm)     |
 | Linux    | AES-128-CBC | No        | [`os_crypt_linux.cc`](https://source.chromium.org/chromium/chromium/src/+/master:components/os_crypt/os_crypt_linux.cc) |
 
-## Installation
+## Getting started
 
-Havelock is very easy to install, just make sure you have Node.js installed and you’re ready to go. You can use your package manager of choice when installing Havelock:
+Havelock is easy to install, make sure you have Node.js installed and you’re ready to go.
 
-### npm
-
-```
-npm install havelock
-```
-
-### yarn
-
-```
+```sh
 yarn add havelock
 ```
 
-## Usage
-
-Using Havelock is also easy, with its idiomatic API you can get started in no time.
-
-### Extract data
+### Extracting data
 
 Here’s an example of retrieving data from the `logins` table in the `Login Data` file of the `Default` profile in Google Chrome:
 
@@ -90,7 +76,7 @@ explorer
   });
 ```
 
-### Decrypt data
+### Decrypting data
 
 Havelock supports decryption of encrypted passwords and credit cards numbers, here’s an example of decrypting a password from the `logins` table in the `Login Data` file of the `Default` profile of Google Chrome:
 
@@ -129,4 +115,6 @@ explorer
 
 Thank you to David Sheldrick ([ds300](https://github.com/ds300)) for passing on the package name.
 
-## [License](https://github.com/phoqe/havelock/blob/master/LICENSE.md)
+## License
+
+MIT
