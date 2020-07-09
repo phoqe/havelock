@@ -50,10 +50,10 @@ explorer
     "Login Data",
     "logins"
   )
-  .then(value => {
+  .then((value) => {
     console.log(value);
   })
-  .catch(reason => {
+  .catch((reason) => {
     console.error(reason);
   });
 ```
@@ -68,12 +68,30 @@ const browser = havelock.browser;
 
 explorer
   .getLoginsFromLoginDataFile(browser.chrome, "Default")
-  .then(value => {
+  .then((value) => {
     console.log(value);
   })
-  .catch(reason => {
+  .catch((reason) => {
     console.error(reason);
   });
+```
+
+### Printing data
+
+If you’re only interested in outputting the data, you can use the print methods:
+
+```js
+const havelock = require("havelock");
+
+const explorer = havelock.explorer;
+const browser = havelock.browser;
+
+explorer.getDataFromUserDataDirectoryFile(
+  browser.chrome,
+  "Default",
+  "Login Data",
+  "logins"
+);
 ```
 
 ### Decrypting data
@@ -94,19 +112,19 @@ explorer
     "Login Data",
     "logins"
   )
-  .then(logins => {
-    logins.forEach(login => {
+  .then((logins) => {
+    logins.forEach((login) => {
       security
         .decryptData(browser.chrome, login.password_value)
-        .then(value => {
+        .then((value) => {
           console.log(value);
         })
-        .catch(reason => {
+        .catch((reason) => {
           console.error(reason);
         });
     });
   })
-  .catch(reason => {
+  .catch((reason) => {
     console.error(reason);
   });
 ```
