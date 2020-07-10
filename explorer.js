@@ -37,6 +37,12 @@ exports.getDataFromFile = (filePath, table) => {
 
           database.all(`SELECT * FROM ${table}`, (error, rows) => {
             if (error) {
+              if (error.code === "SQLITE_BUSY") {
+                console.error(
+                  "A browser is using the requested user data file. Please close all instances of the browser and try again."
+                );
+              }
+
               reject(error);
 
               return;
