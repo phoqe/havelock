@@ -119,6 +119,26 @@ explorer
   });
 ```
 
+## CLI
+
+If you’re not interested in the programmatic API you can use the CLI version of Havelock. You can install it globally using Yarn:
+
+```sh
+yarn global add havelock
+```
+
+The command `havelock` is now available globally throughout your system. You can see the available commands with:
+
+```sh
+havelock --help
+```
+
+For example, you could retrieve your logins from the default profile in Google Chrome with:
+
+```sh
+havelock logins chrome default
+```
+
 ## Attribution
 
 Thank you to David Sheldrick ([ds300](https://github.com/ds300)) for passing on the package name.
