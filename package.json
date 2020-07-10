@@ -29,6 +29,7 @@
   },
   "private": false,
   "dependencies": {
+    "commander": "^5.1.0",
     "keytar": "^6.0.1",
     "sqlite3": "^5.0.0"
   },
@@ -41,5 +42,8 @@
     "hooks": {
       "pre-commit": "pretty-quick --staged"
     }
+  },
+  "bin": {
+    "havelock": "cli.js"
   }
 }
