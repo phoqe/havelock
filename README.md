@@ -1,5 +1,9 @@
 # Havelock
 
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/7033377/87176128-f148e700-c2d9-11ea-83c3-700c7f318b2a.png">  
+</p>
+
 Havelock is a simple Node.js package capable of extracting data such as accounts, cookies, and history from web browsers based on Chromium, e.g., Google Chrome and Brave.
 
 ## Verified web browsers
@@ -138,10 +142,6 @@ For example, you could retrieve your logins from the default profile in Google C
 ```sh
 havelock logins chrome default
 ```
-
-<p align="center">
-  <img src="https://user-images.githubusercontent.com/7033377/87176128-f148e700-c2d9-11ea-83c3-700c7f318b2a.png">  
-</p>
 
 ## Attribution
 
