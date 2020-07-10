@@ -72,27 +72,14 @@ exports.printDataFromFile = (filePath, table) => {
       return;
     }
 
-    const database = new sqlite3.Database(
-      filePath,
-      sqlite3.OPEN_READONLY,
-      (error) => {
-        if (error) {
-          console.error(error);
-
-          return;
-        }
-
-        database.all(`SELECT * FROM ${table}`, (error, rows) => {
-          if (error) {
-            console.error(error);
-
-            return;
-          }
-
-          console.log(rows);
-        });
-      }
-    );
+    exports
+      .getDataFromFile(filePath, table)
+      .then((value) => {
+        console.log(value);
+      })
+      .catch((reason) => {
+        console.error(reason);
+      });
   });
 };
 
