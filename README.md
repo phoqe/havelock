@@ -121,13 +121,13 @@ explorer
 
 ## CLI
 
-If you’re not interested in the programmatic API you can use the CLI version of Havelock. You can install it globally using Yarn:
+If you’re not interested in the programmatic API, you can use the CLI version of Havelock. You can install it globally using Yarn:
 
 ```sh
 yarn global add havelock
 ```
 
-The command `havelock` is now available globally throughout your system. You can see the available commands with:
+The command `havelock` is now available globally throughout your system. You can see the commands with:
 
 ```sh
 havelock --help
