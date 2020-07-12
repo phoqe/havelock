@@ -1,3 +1,9 @@
-exports.explorer = require("./explorer");
-exports.browser = require("./browser");
-exports.crypto = require("./crypto");
+const explorer = require("./explorer");
+const browser = require("./browser");
+const crypto = require("./crypto");
+
+exports.decryptData = crypto.decryptData;
+
+exports.explorer = explorer;
+exports.browser = browser;
+exports.crypto = crypto;
