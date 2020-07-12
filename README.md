@@ -75,19 +75,6 @@ explorer
   });
 ```
 
-### Printing data
-
-If you’re only interested in outputting the data, you can use the print methods:
-
-```js
-explorer.getDataFromUserDataDirectoryFile(
-  browser.chrome,
-  "Default",
-  "Login Data",
-  "logins"
-);
-```
-
 ### Decrypting data
 
 Havelock supports decryption of encrypted passwords and credit cards numbers, here’s an example of decrypting a password from the `logins` table in the `Login Data` file of the `Default` profile of Google Chrome:
