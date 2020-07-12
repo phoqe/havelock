@@ -1,3 +1,3 @@
 exports.explorer = require("./explorer");
 exports.browser = require("./browser");
-exports.security = require("./security");
+exports.crypto = require("./crypto");

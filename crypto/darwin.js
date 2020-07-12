@@ -15,7 +15,7 @@ const aes128BlockSize = 16;
  * @param browser {object}
  * @returns {Promise<string>}
  */
-const getPassword = browser => {
+const getPassword = (browser) => {
   return new Promise((resolve, reject) => {
     if (!browser) {
       reject();
@@ -25,10 +25,10 @@ const getPassword = browser => {
 
     keytar
       .getPassword(browser.keychain.service, browser.keychain.account)
-      .then(password => {
+      .then((password) => {
         resolve(password);
       })
-      .catch(reason => {
+      .catch((reason) => {
         reject(reason);
       });
   });
@@ -43,7 +43,7 @@ const getPassword = browser => {
  * @param browser {object}
  * @returns {Promise<Buffer>}
  */
-const createEncryptionKey = browser => {
+const createEncryptionKey = (browser) => {
   return new Promise((resolve, reject) => {
     if (!browser) {
       reject();
@@ -52,7 +52,7 @@ const createEncryptionKey = browser => {
     }
 
     getPassword(browser)
-      .then(password => {
+      .then((password) => {
         if (!password) {
           reject();
 
@@ -69,7 +69,7 @@ const createEncryptionKey = browser => {
           resolve(derivedKey);
         });
       })
-      .catch(reason => {
+      .catch((reason) => {
         reject(reason);
       });
   });
@@ -97,7 +97,7 @@ exports.decryptData = (browser, data) => {
     }
 
     createEncryptionKey(browser)
-      .then(encryptionKey => {
+      .then((encryptionKey) => {
         if (!encryptionKey) {
           reject();
 
@@ -123,7 +123,7 @@ exports.decryptData = (browser, data) => {
 
         resolve(plaintext);
       })
-      .catch(reason => {
+      .catch((reason) => {
         reject(reason);
       });
   });

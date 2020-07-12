@@ -2,13 +2,13 @@ const havelock = require("./index");
 
 const explorer = havelock.explorer;
 const browser = havelock.browser;
-const security = havelock.security;
+const crypto = havelock.crypto;
 
 explorer
   .getLoginsFromLoginDataFile(browser.chrome, "Default")
   .then((logins) => {
     logins.forEach((login) => {
-      security
+      crypto
         .decryptData(browser.chrome, login.password_value)
         .then((value) => {
           console.log(value);
