@@ -7,6 +7,11 @@ const package = require("./package.json");
 program.name(package.name);
 program.version(package.version);
 
+program.option(
+  "-d, --decrypt",
+  "decrypt fields known to be encrypted, i.e. `password_value`"
+);
+
 program
   .command("logins <browser> <profile>")
   .alias("accounts")
