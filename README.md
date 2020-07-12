@@ -118,7 +118,7 @@ If you’re not interested in the programmatic API, you can use the CLI version 
 yarn global add havelock
 ```
 
-The command `havelock` is now available globally throughout your system. You can see the commands with:
+The command `havelock` is now available globally throughout your system. You can see the commands and options with:
 
 ```sh
 havelock --help
