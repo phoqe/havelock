@@ -1,6 +1,6 @@
 # Havelock
 
-Havelock is a simple Node.js package capable of extracting data such as accounts, cookies, and history from web browsers based on Chromium, e.g., Google Chrome and Brave.
+Havelock is a simple Node.js package capable of extracting data such as accounts, cookies, and history from web browsers based on Chromium, e.g., Google Chrome and Brave. It also has a CLI tool.
 
 <p align="center">
   <img src="https://user-images.githubusercontent.com/7033377/87176128-f148e700-c2d9-11ea-83c3-700c7f318b2a.png">  
@@ -8,7 +8,7 @@ Havelock is a simple Node.js package capable of extracting data such as accounts
 
 ## Verified web browsers
 
-Every Chromium-based web browser using the same storage mechanism for user data is supported. These are the web browsers I’ve tested:
+Every Chromium-based web browser using the same storage mechanism for user data is supported. These are the verified web browsers:
 
 | Name                 | API            | Platform(s)           |
 | -------------------- | -------------- | --------------------- |
@@ -19,6 +19,10 @@ Every Chromium-based web browser using the same storage mechanism for user data 
 | Google Chrome Canary | `chromeCanary` | Windows, macOS        |
 | Brave Stable         | `brave`        | Windows, macOS, Linux |
 
+### Adding a browser
+
+Feel free to add support for more browsers through a Pull Request. To get started, take a look at the existing browser definitions in `/browsers`. The gist of adding a browser is simple. You need to figure out the Keychain credentials and provide a path resolution that works on Windows, macOS, and Linux.
+
 ## String decryption
 
 You can decrypt strings retrieved from your web browser using Havelock. Currently, there is only support for macOS.
@@ -28,6 +32,10 @@ You can decrypt strings retrieved from your web browser using Havelock. Currentl
 | Windows  | AES-256-GCM | No        | [`os_crypt_win.cc`](https://source.chromium.org/chromium/chromium/src/+/master:components/os_crypt/os_crypt_win.cc)     |
 | macOS    | AES-128-CBC | Yes       | [`os_crypt_mac.mm`](https://source.chromium.org/chromium/chromium/src/+/master:components/os_crypt/os_crypt_mac.mm)     |
 | Linux    | AES-128-CBC | No        | [`os_crypt_linux.cc`](https://source.chromium.org/chromium/chromium/src/+/master:components/os_crypt/os_crypt_linux.cc) |
+
+### Windows and Linux
+
+There is no decryption support for Windows and Linux. It may come in the future but not planned. Send a Pull Request if you got it figured out.
 
 ## Getting started
 
@@ -80,11 +88,7 @@ explorer
 Havelock supports decryption of encrypted passwords and credit cards numbers, here’s an example of decrypting a password from the `logins` table in the `Login Data` file of the `Default` profile of Google Chrome:
 
 ```js
-const havelock = require("havelock");
-
-const explorer = havelock.explorer;
-const browser = havelock.browser;
-const security = havelock.security;
+const crypto = havelock.crypto;
 
 explorer
   .getDataFromUserDataDirectoryFile(
@@ -95,7 +99,7 @@ explorer
   )
   .then((logins) => {
     logins.forEach((login) => {
-      security
+      crypto
         .decryptData(browser.chrome, login.password_value)
         .then((value) => {
           console.log(value);
@@ -129,6 +133,14 @@ For example, you could retrieve your logins from the default profile in Google C
 ```sh
 havelock logins chrome default
 ```
+
+If you want a more filtered version of the output, i.e. interesting data points, you can use the option `-t`:
+
+```sh
+havelock logins chrome default -t
+```
+
+Also, if you want to decrypt known encrypted fieds, use the option `-d`.
 
 ## Attribution
 
