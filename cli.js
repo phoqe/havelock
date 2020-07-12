@@ -34,7 +34,7 @@ program
         console.log(value);
       })
       .catch((reason) => {
-        console.error(reason);
+        console.error(reason.message);
       });
   });
 
@@ -51,7 +51,7 @@ program.command("cookies <browser> <profile>").action((browser, profile) => {
       console.log(value);
     })
     .catch((reason) => {
-      console.error(reason);
+      console.error(reason.message);
     });
 });
 
@@ -71,7 +71,7 @@ program
         console.log(value);
       })
       .catch((reason) => {
-        console.error(reason);
+        console.error(reason.message);
       });
   });
 
