@@ -54,5 +54,8 @@
     "extends": [
       "@commitlint/config-conventional"
     ]
+  },
+  "release": {
+    "tagFormat": "${version}"
   }
 }
