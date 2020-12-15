@@ -15,11 +15,14 @@ program
   .option("-t, --table", "output interesting data in a table");
 
 program
-  .command("logins <browser> <profile>")
+  .command("logins <browser> [profile]")
   .alias("accounts")
   .action((browser, profile) => {
     havelock.explorer
-      .getLoginsFromLoginDataFile(havelock.browser[browser], profile)
+      .getLoginsFromLoginDataFile(
+        havelock.browser[browser],
+        profile ?? "Default"
+      )
       .then((value) => {
         if (program.table) {
           console.table(value, [
@@ -38,9 +41,9 @@ program
       });
   });
 
-program.command("cookies <browser> <profile>").action((browser, profile) => {
+program.command("cookies <browser> [profile]").action((browser, profile) => {
   havelock.explorer
-    .getCookiesFromCookiesFile(havelock.browser[browser], profile)
+    .getCookiesFromCookiesFile(havelock.browser[browser], profile ?? "Default")
     .then((value) => {
       if (program.table) {
         console.table(value, ["host_key", "name", "encrypted_value"]);
@@ -56,11 +59,11 @@ program.command("cookies <browser> <profile>").action((browser, profile) => {
 });
 
 program
-  .command("urls <browser> <profile>")
+  .command("urls <browser> [profile]")
   .alias("history")
   .action((browser, profile) => {
     havelock.explorer
-      .getUrlsFromHistoryFile(havelock.browser[browser], profile)
+      .getUrlsFromHistoryFile(havelock.browser[browser], profile ?? "Default")
       .then((value) => {
         if (program.table) {
           console.table(value, ["url", "title"]);
