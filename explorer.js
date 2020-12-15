@@ -12,7 +12,7 @@ const sqlite3 = require("sqlite3");
 exports.getDataFromFile = (filePath, table) => {
   return new Promise((resolve, reject) => {
     if (!filePath) {
-      reject();
+      reject(new Error("No file path provided."));
 
       return;
     }
