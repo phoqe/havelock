@@ -10,7 +10,7 @@ program.version(package.version);
 program
   .option(
     "-d, --decrypt",
-    "decrypt fields known to be encrypted, i.e. `password_value`"
+    "decrypt fields known to be encrypted, i.e. password_value"
   )
   .option("-t, --table", "output interesting data in a table");
 
