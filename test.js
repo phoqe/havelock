@@ -4,17 +4,10 @@ const explorer = havelock.explorer;
 const browser = havelock.browser;
 
 explorer
-  .getLoginsFromLoginDataFile(browser.chrome, "Default")
-  .then((logins) => {
-    logins.forEach((login) => {
-      havelock
-        .decryptData(browser.chrome, login.password_value)
-        .then((value) => {
-          console.log(value);
-        })
-        .catch((reason) => {
-          console.error(reason);
-        });
+  .getUrlsFromHistoryFile(browser.brave, "Default")
+  .then((urls) => {
+    urls.forEach((url) => {
+      console.log(url);
     });
   })
   .catch((reason) => {
