@@ -1,14 +1,10 @@
 # Havelock
 
-Havelock is a simple Node.js package capable of extracting data such as accounts, cookies, and history from web browsers based on Chromium, e.g., Google Chrome and Brave. It also has a CLI tool.
+Havelock can extract and decrypt accounts, cookies, and history from web browsers based on Chromium. Initially developed as part of a remote administration tool for harvesting accounts from a computer and sending them to a remote endpoint securely. Now available as a programmatic API in JavaScript and a CLI for local operations.
 
-<p align="center">
-  <img src="https://user-images.githubusercontent.com/7033377/87176128-f148e700-c2d9-11ea-83c3-700c7f318b2a.png">  
-</p>
+## Verified Web Browsers
 
-## Verified web browsers
-
-Every Chromium-based web browser using the same storage mechanism for user data is supported. These are the verified web browsers:
+Every web browser using the same storage mechanism for user data is supported. These are the verified web browsers:
 
 | Name                 | API            | Platform(s)           |
 | -------------------- | -------------- | --------------------- |
@@ -19,11 +15,11 @@ Every Chromium-based web browser using the same storage mechanism for user data 
 | Google Chrome Canary | `chromeCanary` | Windows, macOS        |
 | Brave Stable         | `brave`        | Windows, macOS, Linux |
 
-### Adding a browser
+### Adding a Browser
 
-Feel free to add support for more browsers through a Pull Request. To get started, take a look at the existing browser definitions in `/browsers`. The gist of adding a browser is simple. You need to figure out the Keychain credentials and provide a path resolution that works on Windows, macOS, and Linux.
+Feel free to add support for more browsers through a Pull Request. To get started, take a look at the existing browser definitions in [`/browsers`](browsers). The gist of adding a browser is simple. You need to figure out the Keychain credentials and provide a path resolution that works on Windows, macOS, and Linux.
 
-## String decryption
+## String Decryption
 
 You can decrypt strings retrieved from your web browser using Havelock. Currently, there is only support for macOS.
 
@@ -35,17 +31,11 @@ You can decrypt strings retrieved from your web browser using Havelock. Currentl
 
 ### Windows and Linux
 
-There is no decryption support for Windows and Linux. It may come in the future but not planned. Send a Pull Request if you got it figured out.
+There is no decryption support for Windows and Linux yet.
 
-## Getting started
+## Usage
 
-Havelock is easy to install, make sure you have Node.js installed and you’re ready to go.
-
-```sh
-yarn add havelock
-```
-
-### Extracting data
+### Extracting Data
 
 Here’s an example of retrieving data from the `logins` table in the `Login Data` file of the `Default` profile in Google Chrome:
 
@@ -83,7 +73,7 @@ explorer
   });
 ```
 
-### Decrypting data
+### Decrypting Data
 
 Havelock supports decryption of encrypted passwords and credit cards numbers, here’s an example of decrypting a password from the `logins` table in the `Login Data` file of the `Default` profile of Google Chrome:
 
