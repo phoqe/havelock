@@ -4,7 +4,7 @@ Extract and decrypt accounts, cookies, and history from web browsers based on Ch
 
 ## API
 
-The Havelock API is available in JavaScript. You can only use it in a Node.js environment.
+The Havelock API is available in JavaScript. You can only use it from a Node.js environment.
 
 ### Installation
 
@@ -18,21 +18,16 @@ yarn add havelock
 
 Using the Havelock API is quick and easy.
 
-#### Extracting Data
+#### Extracting data
 
 Here’s an example of retrieving data from the `logins` table in the `Login Data` file of the `Default` profile in Google Chrome:
 
 ```js
-// Includes the Havelock API from `node_modules`.
 const havelock = require("havelock");
 
-// The Explorer module is used to retrieve data from a `browser`.
 const explorer = havelock.explorer;
-
-// Browsers exist as separate modules, e.g. `browser.chrome`.
 const browser = havelock.browser;
 
-// Executes an SQL query on the selected browser's Login Data file.
 explorer
   .getDataFromUserDataDirectoryFile(
     browser.chrome,
@@ -41,11 +36,9 @@ explorer
     "logins"
   )
   .then((value) => {
-    // From here you can read the values. Some values may be encrypted but don't worry, we'll cover it in the next section.
     console.info(value);
   })
   .catch((reason) => {
-    // If your program ends up here, you probably hit an error with SQLite, e.g. `SQLITE_BUSY`. Close your web browser and rerun the script.
     console.error(reason);
   });
 ```
@@ -63,12 +56,11 @@ explorer
   });
 ```
 
-#### Decrypting Data
+#### Decrypting data
 
 Havelock can decrypt passwords and credit cards numbers. Here’s an example of decrypting a password from the `logins` table in the `Login Data` file of the `Default` profile of Google Chrome:
 
 ```js
-// The Crypto module contains methods to decrypt protected values. They are included based on the running operating system.
 const crypto = havelock.crypto;
 
 explorer
@@ -80,7 +72,6 @@ explorer
   )
   .then((logins) => {
     logins.forEach((login) => {
-      // Decrypts passwords using the methods for the Chrome browser.
       crypto
         .decryptData(browser.chrome, login.password_value)
         .then((value) => {
@@ -96,7 +87,7 @@ explorer
   });
 ```
 
-### Verified Web Browsers
+### Verified web browsers
 
 Every web browser using the same storage mechanism for user data is supported. These are the verified web browsers:
 
@@ -109,11 +100,11 @@ Every web browser using the same storage mechanism for user data is supported. T
 | Google Chrome Canary | `chromeCanary` | Windows, macOS        |
 | Brave Stable         | `brave`        | Windows, macOS, Linux |
 
-#### Adding a Browser
+#### Adding a browser
 
 Feel free to add support for more browsers through a Pull Request. To get started, take a look at the existing browser definitions in [`/browsers`](browsers). The gist of adding a browser is simple. You need to figure out the Keychain credentials and provide a path resolution that works on Windows, macOS, and Linux.
 
-### String Decryption
+### String decryption
 
 You can decrypt strings retrieved from your web browser using Havelock. Currently, there is only support for macOS.
 
@@ -147,7 +138,7 @@ The command `havelock` should now be available globally throughout your system. 
 havelock --help
 ```
 
-### Extracting Data
+### Extracting data
 
 You can retrieve your logins from the default profile in Google Chrome with:
 
@@ -161,7 +152,7 @@ If you want a more filtered version of the output, i.e. interesting data points,
 havelock logins chrome default -t
 ```
 
-### Decrypting Data
+### Decrypting data
 
 Use the option `-d` if you want to decrypt fields known to be encrypted.
 
