@@ -3,9 +3,23 @@ const { program } = require("commander");
 const package = require("../package.json");
 const actions = require("./actions");
 
+/**
+ * Configuration
+ */
+
 program.name(package.name);
 program.version(package.version);
 program.description(package.description);
+
+/**
+ * Options
+ */
+
+program.option("-t, --tabular", "present data of interest in a table", false);
+
+/**
+ * Actions
+ */
 
 program
   .command("logins <browser> [profile]")

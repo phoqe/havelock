@@ -1,5 +1,8 @@
+const { program } = require("commander");
+
 const havelock = require("../index");
 
+const opts = program.opts();
 const explorer = havelock.explorer;
 
 /**
@@ -34,6 +37,7 @@ exports.logins = (browser, profile = "Default") => {
   console.debug("logins");
   console.debug("browser", browser);
   console.debug("profile", profile);
+  console.debug("opts", opts);
 
   browser = havelock.browser[browser];
 
@@ -55,17 +59,26 @@ exports.logins = (browser, profile = "Default") => {
       console.debug("Retrieved logins from data file.");
       console.debug("logins", logins.length);
 
-      success(logins);
+      if (opts.tabular) {
+        console.table(logins, [
+          "origin_url",
+          "username_value",
+          "password_value",
+        ]);
+      } else {
+        success(logins);
+      }
     })
     .catch((reason) => {
       error("Failed to retrieve logins from data file.", reason);
     });
 };
 
-exports.cookies = (browser, profile = "Default") => {
+exports.cookies = (browser, profile = "Default", opts) => {
   console.debug("cookies");
   console.debug("browser", browser);
   console.debug("profile", profile);
+  console.debug("opts", opts);
 
   browser = havelock.browser[browser];
 
@@ -87,17 +100,22 @@ exports.cookies = (browser, profile = "Default") => {
       console.debug("Retrieved cookies from data file.");
       console.debug("cookies", cookies.length);
 
-      success(cookies);
+      if (opts.tabular) {
+        console.table(urls, ["host_key", "name", "encrypted_value"]);
+      } else {
+        success(cookies);
+      }
     })
     .catch((reason) => {
       error("Failed to retrieve cookies from data file.", reason);
     });
 };
 
-exports.urls = (browser, profile = "Default") => {
+exports.urls = (browser, profile = "Default", opts) => {
   console.debug("urls");
   console.debug("browser", browser);
   console.debug("profile", profile);
+  console.debug("opts", opts);
 
   browser = havelock.browser[browser];
 
@@ -119,7 +137,11 @@ exports.urls = (browser, profile = "Default") => {
       console.debug("Retrieved URLs from data file.");
       console.debug("urls", urls.length);
 
-      success(urls);
+      if (opts.tabular) {
+        console.table(urls, ["url", "title"]);
+      } else {
+        success(urls);
+      }
     })
     .catch((reason) => {
       error("Failed to retrieve URLs from data file.", reason);
