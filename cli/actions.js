@@ -1,4 +1,8 @@
+const fs = require("fs");
+const path = require("path");
+
 const { program } = require("commander");
+const prettier = require("prettier");
 
 const havelock = require("../index");
 
@@ -33,6 +37,24 @@ const success = (message = null, ...optionalParams) => {
   process.exit(0);
 };
 
+const writeToFile = (fileName, data) => {
+  return new Promise((resolve, reject) => {
+    const filePath = path.join(process.cwd(), fileName);
+    const json = JSON.stringify(data);
+    const fmtJson = prettier.format(json, { parser: "json" });
+
+    fs.writeFile(filePath, fmtJson, { encoding: "utf8" }, (err) => {
+      if (err) {
+        reject(err);
+
+        return;
+      }
+
+      resolve(filePath);
+    });
+  });
+};
+
 exports.logins = (browser, profile = "Default") => {
   console.debug("logins");
   console.debug("browser", browser);
@@ -65,6 +87,14 @@ exports.logins = (browser, profile = "Default") => {
           "username_value",
           "password_value",
         ]);
+      } else if (opts.file) {
+        writeToFile("logins.json", logins)
+          .then((filePath) => {
+            success(filePath);
+          })
+          .catch((reason) => {
+            error(reason.message);
+          });
       } else {
         success(logins);
       }
@@ -102,6 +132,14 @@ exports.cookies = (browser, profile = "Default", opts) => {
 
       if (opts.tabular) {
         console.table(urls, ["host_key", "name", "encrypted_value"]);
+      } else if (opts.file) {
+        writeToFile("cookies.json", cookies)
+          .then((filePath) => {
+            success(filePath);
+          })
+          .catch((reason) => {
+            error(reason.message);
+          });
       } else {
         success(cookies);
       }
@@ -139,6 +177,14 @@ exports.urls = (browser, profile = "Default", opts) => {
 
       if (opts.tabular) {
         console.table(urls, ["url", "title"]);
+      } else if (opts.urls) {
+        writeToFile("urls.json", urls)
+          .then((filePath) => {
+            success(filePath);
+          })
+          .catch((reason) => {
+            error(reason.message);
+          });
       } else {
         success(urls);
       }

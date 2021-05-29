@@ -31,13 +31,13 @@
   "dependencies": {
     "commander": "^7.2.0",
     "keytar": "^7.2.0",
-    "sqlite3": "^5.0.0"
+    "sqlite3": "^5.0.0",
+    "prettier": "2.2.1"
   },
   "devDependencies": {
     "@commitlint/cli": "^12.1.4",
     "@commitlint/config-conventional": "^11.0.0",
     "husky": "^4.2.1",
-    "prettier": "2.2.1",
     "lint-staged": "^10.5.4",
     "semantic-release": "^17.4.3"
   },
