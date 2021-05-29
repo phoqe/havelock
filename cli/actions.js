@@ -115,6 +115,7 @@ exports.logins = (browser, profile = "Default") => {
 
 exports.cookies = (browser, profile = "Default") => {
   const opts = program.opts();
+
   console.debug("cookies");
   console.debug("browser", browser);
   console.debug("profile", profile);
