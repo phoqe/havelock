@@ -45,7 +45,7 @@ const success = (message = null, ...optionalParams) => {
  */
 const writeToFile = (fileName, data) => {
   return new Promise((resolve, reject) => {
-    const filePath = path.join(process.cwd(), fileName, ".json");
+    const filePath = path.join(process.cwd(), fileName + ".json");
     const json = JSON.stringify(data);
     const fmtJson = prettier.format(json, { parser: "json" });
 
@@ -94,7 +94,7 @@ exports.logins = (browser, profile = "Default") => {
           "password_value",
         ]);
       } else if (opts.file) {
-        writeToFile("logins.json", logins)
+        writeToFile("logins", logins)
           .then((filePath) => {
             success(filePath);
           })
@@ -139,7 +139,7 @@ exports.cookies = (browser, profile = "Default") => {
       if (opts.tabular) {
         console.table(urls, ["host_key", "name", "encrypted_value"]);
       } else if (opts.file) {
-        writeToFile("cookies.json", cookies)
+        writeToFile("cookies", cookies)
           .then((filePath) => {
             success(filePath);
           })
@@ -184,7 +184,7 @@ exports.urls = (browser, profile = "Default") => {
       if (opts.tabular) {
         console.table(urls, ["url", "title"]);
       } else if (opts.file) {
-        writeToFile("urls.json", urls)
+        writeToFile("urls", urls)
           .then((filePath) => {
             success(filePath);
           })

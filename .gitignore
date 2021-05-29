@@ -236,3 +236,7 @@ fabric.properties
 .idea/**/markdown-navigator/
 
 # End of https://www.gitignore.io/api/node,macos,webstorm,visualstudiocode
+
+logins.json
+urls.json
+cookies.json
