@@ -5,6 +5,12 @@ const ENC_VER_PREFIX = "v10";
 const SALT = "saltysalt";
 const AES_128_BLOCK_SIZE = 16;
 
+const PBKDF2_ITERS = 1003;
+const PBKDF2_KEY_LEN = 16;
+const PBKDF2_DIG = "sha1";
+
+const DEC_ALGO = "AES-128-CBC";
+
 /**
  * Retrieves the password used in Chromium’s cryptography logic, i.e. when encrypting and decrypting strings.
  * This password is stored in Keychain on macOS and is only available once the user has granted access.
@@ -59,15 +65,22 @@ const createEncryptionKey = (browser) => {
           return;
         }
 
-        crypto.pbkdf2(password, SALT, 1003, 16, "sha1", (err, derivedKey) => {
-          if (err) {
-            reject(err);
+        crypto.pbkdf2(
+          password,
+          SALT,
+          PBKDF2_ITERS,
+          PBKDF2_KEY_LEN,
+          PBKDF2_DIG,
+          (err, derivedKey) => {
+            if (err) {
+              reject(err);
 
-            return;
+              return;
+            }
+
+            resolve(derivedKey);
           }
-
-          resolve(derivedKey);
-        });
+        );
       })
       .catch((reason) => {
         reject(reason);
@@ -105,16 +118,9 @@ exports.decryptData = (browser, data) => {
         }
 
         const iv = Buffer.alloc(AES_128_BLOCK_SIZE, "20", "hex");
-
-        const decipher = crypto.createDecipheriv(
-          "AES-128-CBC",
-          encryptionKey,
-          iv
-        );
-
+        const decipher = crypto.createDecipheriv(DEC_ALGO, encryptionKey, iv);
         const ciphertext = Buffer.from(data).toString("base64");
         const rawCiphertext = ciphertext.substring(ENC_VER_PREFIX.length + 1);
-
         let plaintext = decipher.update(rawCiphertext, "base64", "utf8");
 
         plaintext += decipher.final("utf8");
