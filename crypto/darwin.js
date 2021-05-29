@@ -1,14 +1,17 @@
 const crypto = require("crypto");
 const keytar = require("keytar");
 
+// General
 const ENC_VER_PREFIX = "v10";
 const SALT = "saltysalt";
 const AES_128_BLOCK_SIZE = 16;
 
+// PBKDF2
 const PBKDF2_ITERS = 1003;
 const PBKDF2_KEY_LEN = 16;
 const PBKDF2_DIG = "sha1";
 
+// Decipher
 const DEC_ALGO = "AES-128-CBC";
 
 /**
