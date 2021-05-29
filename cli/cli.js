@@ -16,7 +16,7 @@ program.description(package.description);
  */
 
 program.option("-t, --tabular", "present data of interest in a table", false);
-program.option("-f, --file", "write requested data to file");
+program.option("-f, --file", "write requested data to file", false);
 
 /**
  * Actions

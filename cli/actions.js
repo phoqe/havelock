@@ -4,7 +4,6 @@ const { program } = require("commander");
 const prettier = require("prettier");
 const havelock = require("../havelock");
 
-const opts = program.opts();
 const explorer = havelock.explorer;
 
 /**
@@ -62,6 +61,8 @@ const writeToFile = (fileName, data) => {
 };
 
 exports.logins = (browser, profile = "Default") => {
+  const opts = program.opts();
+
   console.debug("logins");
   console.debug("browser", browser);
   console.debug("profile", profile);
@@ -93,6 +94,8 @@ exports.logins = (browser, profile = "Default") => {
           "username_value",
           "password_value",
         ]);
+
+        success();
       } else if (opts.file) {
         writeToFile("logins", logins)
           .then((filePath) => {
@@ -111,6 +114,7 @@ exports.logins = (browser, profile = "Default") => {
 };
 
 exports.cookies = (browser, profile = "Default") => {
+  const opts = program.opts();
   console.debug("cookies");
   console.debug("browser", browser);
   console.debug("profile", profile);
@@ -138,6 +142,8 @@ exports.cookies = (browser, profile = "Default") => {
 
       if (opts.tabular) {
         console.table(urls, ["host_key", "name", "encrypted_value"]);
+
+        success();
       } else if (opts.file) {
         writeToFile("cookies", cookies)
           .then((filePath) => {
@@ -156,6 +162,8 @@ exports.cookies = (browser, profile = "Default") => {
 };
 
 exports.urls = (browser, profile = "Default") => {
+  const opts = program.opts();
+
   console.debug("urls");
   console.debug("browser", browser);
   console.debug("profile", profile);
@@ -183,6 +191,8 @@ exports.urls = (browser, profile = "Default") => {
 
       if (opts.tabular) {
         console.table(urls, ["url", "title"]);
+
+        success();
       } else if (opts.file) {
         writeToFile("urls", urls)
           .then((filePath) => {
