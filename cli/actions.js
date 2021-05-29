@@ -1,9 +1,7 @@
 const fs = require("fs");
 const path = require("path");
-
 const { program } = require("commander");
 const prettier = require("prettier");
-
 const havelock = require("../index");
 
 const opts = program.opts();
@@ -104,7 +102,7 @@ exports.logins = (browser, profile = "Default") => {
     });
 };
 
-exports.cookies = (browser, profile = "Default", opts) => {
+exports.cookies = (browser, profile = "Default") => {
   console.debug("cookies");
   console.debug("browser", browser);
   console.debug("profile", profile);
@@ -149,7 +147,7 @@ exports.cookies = (browser, profile = "Default", opts) => {
     });
 };
 
-exports.urls = (browser, profile = "Default", opts) => {
+exports.urls = (browser, profile = "Default") => {
   console.debug("urls");
   console.debug("browser", browser);
   console.debug("profile", profile);
@@ -177,7 +175,7 @@ exports.urls = (browser, profile = "Default", opts) => {
 
       if (opts.tabular) {
         console.table(urls, ["url", "title"]);
-      } else if (opts.urls) {
+      } else if (opts.file) {
         writeToFile("urls.json", urls)
           .then((filePath) => {
             success(filePath);
