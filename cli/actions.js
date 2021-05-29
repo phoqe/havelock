@@ -2,7 +2,7 @@ const fs = require("fs");
 const path = require("path");
 const { program } = require("commander");
 const prettier = require("prettier");
-const havelock = require("../index");
+const havelock = require("../havelock");
 
 const opts = program.opts();
 const explorer = havelock.explorer;

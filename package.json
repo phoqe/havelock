@@ -17,7 +17,7 @@
     "email": "phoqe@phoqe.dev"
   },
   "license": "MIT",
-  "main": "index.js",
+  "main": "havelock.js",
   "author": {
     "name": "Linus Långberg",
     "email": "phoqe@phoqe.dev",
