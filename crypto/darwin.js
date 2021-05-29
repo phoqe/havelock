@@ -1,9 +1,9 @@
 const crypto = require("crypto");
 const keytar = require("keytar");
 
-const encryptionVersionPrefix = "v10";
-const salt = "saltysalt";
-const aes128BlockSize = 16;
+const ENC_VER_PREFIX = "v10";
+const SALT = "saltysalt";
+const AES_128_BLOCK_SIZE = 16;
 
 /**
  * Retrieves the password used in Chromium’s cryptography logic, i.e. when encrypting and decrypting strings.
@@ -59,7 +59,7 @@ const createEncryptionKey = (browser) => {
           return;
         }
 
-        crypto.pbkdf2(password, salt, 1003, 16, "sha1", (err, derivedKey) => {
+        crypto.pbkdf2(password, SALT, 1003, 16, "sha1", (err, derivedKey) => {
           if (err) {
             reject(err);
 
@@ -90,7 +90,7 @@ exports.decryptData = (browser, data) => {
       return;
     }
 
-    if (data.toString().indexOf(encryptionVersionPrefix) !== 0) {
+    if (data.toString().indexOf(ENC_VER_PREFIX) !== 0) {
       resolve(data);
 
       return;
@@ -104,7 +104,7 @@ exports.decryptData = (browser, data) => {
           return;
         }
 
-        const iv = Buffer.alloc(aes128BlockSize, "20", "hex");
+        const iv = Buffer.alloc(AES_128_BLOCK_SIZE, "20", "hex");
 
         const decipher = crypto.createDecipheriv(
           "AES-128-CBC",
@@ -113,9 +113,7 @@ exports.decryptData = (browser, data) => {
         );
 
         const ciphertext = Buffer.from(data).toString("base64");
-        const rawCiphertext = ciphertext.substring(
-          encryptionVersionPrefix.length + 1
-        );
+        const rawCiphertext = ciphertext.substring(ENC_VER_PREFIX.length + 1);
 
         let plaintext = decipher.update(rawCiphertext, "base64", "utf8");
 
