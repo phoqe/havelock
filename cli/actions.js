@@ -35,9 +35,17 @@ const success = (message = null, ...optionalParams) => {
   process.exit(0);
 };
 
+/**
+ * Instead of printing the data to `stdout` you can use this method to write the data to a file.
+ *
+ * @param {string} fileName The name of the file to write the `data` to. Do not include the file extension, it will use `.json` by default.
+ * @param {any} data The data to write to the file. It should be convertable using `JSON.stringify()`.
+ *
+ * @returns {Promise<string>} Promise resolved with the complete file path or rejected with a `NodeJS.ErrnoException`.
+ */
 const writeToFile = (fileName, data) => {
   return new Promise((resolve, reject) => {
-    const filePath = path.join(process.cwd(), fileName);
+    const filePath = path.join(process.cwd(), fileName, ".json");
     const json = JSON.stringify(data);
     const fmtJson = prettier.format(json, { parser: "json" });
 
