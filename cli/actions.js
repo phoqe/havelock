@@ -60,6 +60,33 @@ const writeToFile = (fileName, data) => {
   });
 };
 
+/**
+ * Print array of `data` in a table structure.
+ * Supply `type` to use typical data points.
+ *
+ * @param {string} type Type of data, e.g., `logins` or `urls`.
+ * @param {Array} data Data to structure in a table. Must be an array.
+ */
+const tabular = (type, data) => {
+  switch (type) {
+    case "logins":
+      console.table(data, ["origin_url", "username_value", "password_value"]);
+      break;
+
+    case "cookies":
+      console.table(data, ["host_key", "name", "encrypted_value"]);
+      break;
+
+    case "urls":
+      console.table(data, ["url", "title"]);
+      break;
+
+    default:
+      console.table(data);
+      break;
+  }
+};
+
 exports.logins = (browser, profile = "Default") => {
   const opts = program.opts();
 
@@ -67,7 +94,7 @@ exports.logins = (browser, profile = "Default") => {
 
   if (!browser) {
     error(
-      "Failed to convert the specified browser string to a verified Havelock browser. Make sure the browser is supported."
+      "Couldn't convert the specified browser to a verified Havelock browser."
     );
 
     return;
@@ -83,11 +110,7 @@ exports.logins = (browser, profile = "Default") => {
       }
 
       if (opts.tabular) {
-        console.table(logins, [
-          "origin_url",
-          "username_value",
-          "password_value",
-        ]);
+        tabular("logins", logins);
 
         success();
       } else if (opts.file) {
@@ -114,7 +137,7 @@ exports.cookies = (browser, profile = "Default") => {
 
   if (!browser) {
     error(
-      "Failed to convert the specified browser string to a verified Havelock browser. Make sure the browser is supported."
+      "Couldn't convert the specified browser to a verified Havelock browser."
     );
 
     return;
@@ -130,7 +153,7 @@ exports.cookies = (browser, profile = "Default") => {
       }
 
       if (opts.tabular) {
-        console.table(urls, ["host_key", "name", "encrypted_value"]);
+        tabular("cookies", cookies);
 
         success();
       } else if (opts.file) {
@@ -157,7 +180,7 @@ exports.urls = (browser, profile = "Default") => {
 
   if (!browser) {
     error(
-      "Failed to convert the specified browser string to a verified Havelock browser. Make sure the browser is supported."
+      "Couldn't convert the specified browser to a verified Havelock browser."
     );
 
     return;
@@ -173,7 +196,7 @@ exports.urls = (browser, profile = "Default") => {
       }
 
       if (opts.tabular) {
-        console.table(urls, ["url", "title"]);
+        tabular("urls", urls);
 
         success();
       } else if (opts.file) {
