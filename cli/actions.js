@@ -14,7 +14,7 @@ const explorer = havelock.explorer;
  */
 const error = (message = null, ...optionalParams) => {
   if (message) {
-    console.error(message, optionalParams);
+    console.error(message, ...optionalParams);
   }
 
   process.exit(1);
