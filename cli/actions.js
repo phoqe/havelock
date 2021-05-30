@@ -63,11 +63,6 @@ const writeToFile = (fileName, data) => {
 exports.logins = (browser, profile = "Default") => {
   const opts = program.opts();
 
-  console.debug("logins");
-  console.debug("browser", browser);
-  console.debug("profile", profile);
-  console.debug("opts", opts);
-
   browser = havelock.browser[browser];
 
   if (!browser) {
@@ -78,15 +73,14 @@ exports.logins = (browser, profile = "Default") => {
     return;
   }
 
-  console.debug(
-    "Converted the specified browser string to a verified Havelock browser."
-  );
-
   explorer
     .getLoginsFromLoginDataFile(browser, profile)
     .then((logins) => {
-      console.debug("Retrieved logins from data file.");
-      console.debug("logins", logins.length);
+      if (!logins.length) {
+        success("No logins.");
+
+        return;
+      }
 
       if (opts.tabular) {
         console.table(logins, [
@@ -116,11 +110,6 @@ exports.logins = (browser, profile = "Default") => {
 exports.cookies = (browser, profile = "Default") => {
   const opts = program.opts();
 
-  console.debug("cookies");
-  console.debug("browser", browser);
-  console.debug("profile", profile);
-  console.debug("opts", opts);
-
   browser = havelock.browser[browser];
 
   if (!browser) {
@@ -131,15 +120,14 @@ exports.cookies = (browser, profile = "Default") => {
     return;
   }
 
-  console.debug(
-    "Converted the specified browser string to a verified Havelock browser."
-  );
-
   explorer
     .getCookiesFromCookiesFile(browser, profile)
     .then((cookies) => {
-      console.debug("Retrieved cookies from data file.");
-      console.debug("cookies", cookies.length);
+      if (!cookies.length) {
+        success("No cookies.");
+
+        return;
+      }
 
       if (opts.tabular) {
         console.table(urls, ["host_key", "name", "encrypted_value"]);
@@ -165,11 +153,6 @@ exports.cookies = (browser, profile = "Default") => {
 exports.urls = (browser, profile = "Default") => {
   const opts = program.opts();
 
-  console.debug("urls");
-  console.debug("browser", browser);
-  console.debug("profile", profile);
-  console.debug("opts", opts);
-
   browser = havelock.browser[browser];
 
   if (!browser) {
@@ -180,15 +163,14 @@ exports.urls = (browser, profile = "Default") => {
     return;
   }
 
-  console.debug(
-    "Converted the specified browser string to a verified Havelock browser."
-  );
-
   explorer
     .getUrlsFromHistoryFile(browser, profile)
     .then((urls) => {
-      console.debug("Retrieved URLs from data file.");
-      console.debug("urls", urls.length);
+      if (!urls.length) {
+        success("No URLs.");
+
+        return;
+      }
 
       if (opts.tabular) {
         console.table(urls, ["url", "title"]);
