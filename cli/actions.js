@@ -3,11 +3,12 @@ const path = require("path");
 const { program } = require("commander");
 const prettier = require("prettier");
 const havelock = require("../havelock");
+const commander = require("commander");
 
 const explorer = havelock.explorer;
 
 /**
- * Shows an optional error message and exits the program with an error code.
+ * Show an optional error message and exits the program with an error code.
  *
  * @param {string} message Message to show before exiting. Will be sent to `stderr`.
  * @param {any[]} optionalParams Any additional params to help the user.
@@ -21,7 +22,7 @@ const error = (message = null, ...optionalParams) => {
 };
 
 /**
- * Shows an optional message and exits the program normally.
+ * Show an optional message and exits the program normally.
  *
  * @param {string} message Message to show before exiting. Will be sent to `stdout`.
  * @param {any[]} optionalParams Any additional params to help the user.
@@ -65,7 +66,7 @@ const writeToFile = (fileName, data) => {
  * Supply `type` to use typical data points.
  *
  * @param {string} type Type of data, e.g., `logins` or `urls`.
- * @param {Array} data Data to structure in a table. Must be an array.
+ * @param {Array} data Data to structure in a table. Must be an `Array`.
  */
 const tabular = (type, data) => {
   switch (type) {
@@ -87,6 +88,49 @@ const tabular = (type, data) => {
   }
 };
 
+/**
+ * Print `data` in multiple formats.
+ * Format is deduced from `opts`.
+ *
+ * @param {string} type Type of data to print. Used to determine interesting data points.
+ * @param {Array} data Data to print. Must be an `Array`.
+ * @param {commander.OptionValues} opts Program options used to determine format type.
+ * @returns
+ */
+const printData = (type, data, opts) => {
+  return new Promise((resolve, reject) => {
+    if (!data.length) {
+      reject();
+
+      return;
+    }
+
+    if (opts.tabular) {
+      tabular(type, data);
+
+      resolve();
+
+      return;
+    }
+
+    if (opts.file) {
+      writeToFile(type, data)
+        .then((filePath) => {
+          resolve(filePath);
+        })
+        .catch((reason) => {
+          reject(reason);
+        });
+
+      return;
+    }
+
+    console.info(data);
+
+    resolve();
+  });
+};
+
 exports.logins = (browser, profile = "Default") => {
   const opts = program.opts();
 
@@ -103,27 +147,25 @@ exports.logins = (browser, profile = "Default") => {
   explorer
     .getLoginsFromLoginDataFile(browser, profile)
     .then((logins) => {
-      if (!logins.length) {
-        success("No logins.");
-
-        return;
-      }
-
-      if (opts.tabular) {
-        tabular("logins", logins);
-
-        success();
-      } else if (opts.file) {
-        writeToFile("logins", logins)
-          .then((filePath) => {
+      printData("logins", logins, opts)
+        .then((filePath) => {
+          if (filePath) {
             success(filePath);
-          })
-          .catch((reason) => {
-            error(reason.message);
-          });
-      } else {
-        success(logins);
-      }
+
+            return;
+          }
+
+          success();
+        })
+        .catch((reason) => {
+          if (reason) {
+            error("Failed to write data to file.", reason);
+
+            return;
+          }
+
+          error("No data.");
+        });
     })
     .catch((reason) => {
       error("Failed to retrieve logins from data file.", reason);
@@ -146,27 +188,25 @@ exports.cookies = (browser, profile = "Default") => {
   explorer
     .getCookiesFromCookiesFile(browser, profile)
     .then((cookies) => {
-      if (!cookies.length) {
-        success("No cookies.");
-
-        return;
-      }
-
-      if (opts.tabular) {
-        tabular("cookies", cookies);
-
-        success();
-      } else if (opts.file) {
-        writeToFile("cookies", cookies)
-          .then((filePath) => {
+      printData("cookies", cookies, opts)
+        .then((filePath) => {
+          if (filePath) {
             success(filePath);
-          })
-          .catch((reason) => {
-            error(reason.message);
-          });
-      } else {
-        success(cookies);
-      }
+
+            return;
+          }
+
+          success();
+        })
+        .catch((reason) => {
+          if (reason) {
+            error("Failed to write data to file.", reason);
+
+            return;
+          }
+
+          error("No data.");
+        });
     })
     .catch((reason) => {
       error("Failed to retrieve cookies from data file.", reason);
@@ -189,27 +229,25 @@ exports.urls = (browser, profile = "Default") => {
   explorer
     .getUrlsFromHistoryFile(browser, profile)
     .then((urls) => {
-      if (!urls.length) {
-        success("No URLs.");
-
-        return;
-      }
-
-      if (opts.tabular) {
-        tabular("urls", urls);
-
-        success();
-      } else if (opts.file) {
-        writeToFile("urls", urls)
-          .then((filePath) => {
+      printData("urls", urls, opts)
+        .then((filePath) => {
+          if (filePath) {
             success(filePath);
-          })
-          .catch((reason) => {
-            error(reason.message);
-          });
-      } else {
-        success(urls);
-      }
+
+            return;
+          }
+
+          success();
+        })
+        .catch((reason) => {
+          if (reason) {
+            error("Failed to write data to file.", reason);
+
+            return;
+          }
+
+          error("No data.");
+        });
     })
     .catch((reason) => {
       error("Failed to retrieve URLs from data file.", reason);
