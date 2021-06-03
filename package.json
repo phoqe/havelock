@@ -1,6 +1,6 @@
 {
   "name": "havelock",
-  "version": "2.0.0",
+  "version": "2.3.0",
   "description": "Extract accounts, cookies, and history from Chromium-based web browsers.",
   "keywords": [
     "chromium",
