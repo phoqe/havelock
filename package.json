@@ -51,7 +51,7 @@
     }
   },
   "bin": {
-    "havelock": "cli.js"
+    "havelock": "./cli/cli.js"
   },
   "commitlint": {
     "extends": [
