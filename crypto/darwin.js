@@ -1,9 +1,18 @@
 const crypto = require("crypto");
 const keytar = require("keytar");
 
-const encryptionVersionPrefix = "v10";
-const salt = "saltysalt";
-const aes128BlockSize = 16;
+// General
+const ENC_VER_PREFIX = "v10";
+const SALT = "saltysalt";
+const AES_128_BLOCK_SIZE = 16;
+
+// PBKDF2
+const PBKDF2_ITERS = 1003;
+const PBKDF2_KEY_LEN = 16;
+const PBKDF2_DIG = "sha1";
+
+// Decipher
+const DEC_ALGO = "AES-128-CBC";
 
 /**
  * Retrieves the password used in Chromium’s cryptography logic, i.e. when encrypting and decrypting strings.
@@ -59,15 +68,22 @@ const createEncryptionKey = (browser) => {
           return;
         }
 
-        crypto.pbkdf2(password, salt, 1003, 16, "sha1", (err, derivedKey) => {
-          if (err) {
-            reject(err);
+        crypto.pbkdf2(
+          password,
+          SALT,
+          PBKDF2_ITERS,
+          PBKDF2_KEY_LEN,
+          PBKDF2_DIG,
+          (err, derivedKey) => {
+            if (err) {
+              reject(err);
 
-            return;
+              return;
+            }
+
+            resolve(derivedKey);
           }
-
-          resolve(derivedKey);
-        });
+        );
       })
       .catch((reason) => {
         reject(reason);
@@ -90,7 +106,7 @@ exports.decryptData = (browser, data) => {
       return;
     }
 
-    if (data.toString().indexOf(encryptionVersionPrefix) !== 0) {
+    if (data.toString().indexOf(ENC_VER_PREFIX) !== 0) {
       resolve(data);
 
       return;
@@ -104,19 +120,10 @@ exports.decryptData = (browser, data) => {
           return;
         }
 
-        const iv = Buffer.alloc(aes128BlockSize, "20", "hex");
-
-        const decipher = crypto.createDecipheriv(
-          "AES-128-CBC",
-          encryptionKey,
-          iv
-        );
-
+        const iv = Buffer.alloc(AES_128_BLOCK_SIZE, "20", "hex");
+        const decipher = crypto.createDecipheriv(DEC_ALGO, encryptionKey, iv);
         const ciphertext = Buffer.from(data).toString("base64");
-        const rawCiphertext = ciphertext.substring(
-          encryptionVersionPrefix.length + 1
-        );
-
+        const rawCiphertext = ciphertext.substring(ENC_VER_PREFIX.length + 1);
         let plaintext = decipher.update(rawCiphertext, "base64", "utf8");
 
         plaintext += decipher.final("utf8");

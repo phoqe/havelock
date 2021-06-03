@@ -1,7 +1,7 @@
 {
   "name": "havelock",
   "version": "2.0.0",
-  "description": "Extract logins, cookies, and history from Chromium-based web browsers",
+  "description": "Extract accounts, cookies, and history from Chromium-based web browsers.",
   "keywords": [
     "chromium",
     "chrome",
@@ -17,7 +17,7 @@
     "email": "phoqe@phoqe.dev"
   },
   "license": "MIT",
-  "main": "index.js",
+  "main": "havelock.js",
   "author": {
     "name": "Linus Långberg",
     "email": "phoqe@phoqe.dev",
@@ -29,30 +29,41 @@
   },
   "private": false,
   "dependencies": {
-    "commander": "^6.2.1",
+    "commander": "^7.2.0",
     "keytar": "^7.2.0",
-    "sqlite3": "^5.0.0"
+    "sqlite3": "^5.0.0",
+    "prettier": "2.2.1"
+  },
+  "scripts": {
+    "format": "prettier --write --ignore-unknown ."
   },
   "devDependencies": {
-    "@commitlint/cli": "^11.0.0",
+    "@commitlint/cli": "^12.1.4",
     "@commitlint/config-conventional": "^11.0.0",
     "husky": "^4.2.1",
-    "prettier": "2.2.1",
-    "pretty-quick": "^3.1.0",
-    "semantic-release": "^17.3.0"
+    "lint-staged": "^10.5.4",
+    "semantic-release": "^17.4.3"
   },
   "husky": {
     "hooks": {
-      "pre-commit": "pretty-quick --staged",
+      "pre-commit": "lint-staged",
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
     }
   },
   "bin": {
-    "havelock": "cli.js"
+    "havelock": "./cli/cli.js"
   },
   "commitlint": {
     "extends": [
       "@commitlint/config-conventional"
+    ]
+  },
+  "release": {
+    "tagFormat": "${version}"
+  },
+  "lint-staged": {
+    "*": [
+      "prettier --write --ignore-unknown"
     ]
   }
 }

@@ -4,7 +4,7 @@ exports.id = "brave";
 exports.name = "Brave";
 exports.keychain = {
   service: "Brave Safe Storage",
-  account: "Brave"
+  account: "Brave",
 };
 
 exports.getUserDataDirectoryPath = () => {
