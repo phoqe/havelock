@@ -4,7 +4,7 @@ exports.id = "chrome-dev";
 exports.name = "Google Chrome Dev";
 exports.keychain = {
   service: "Chrome Safe Storage",
-  account: "Chrome"
+  account: "Chrome",
 };
 
 exports.getUserDataDirectoryPath = () => {
