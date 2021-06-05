@@ -2,6 +2,33 @@
 
 Extract and decrypt accounts, cookies, and history from web browsers based on Chromium. Havelock was initially developed as part of a remote administration tool for harvesting accounts from a computer and sending them to a remote endpoint securely. It’s now available as an API in JavaScript and a standalone CLI.
 
+## Verified Web Browsers
+
+Every web browser using the same storage mechanism for user data is supported. These are the verified web browsers:
+
+| Name                 | API            | Platform(s)           |
+| -------------------- | -------------- | --------------------- |
+| Chromium             | `chromium`     | Windows, macOS, Linux |
+| Google Chrome Stable | `chrome`       | Windows, macOS, Linux |
+| Google Chrome Beta   | `chromeBeta`   | Linux                 |
+| Google Chrome Dev    | `chromeDev`    | Linux                 |
+| Google Chrome Canary | `chromeCanary` | Windows, macOS        |
+| Brave Stable         | `brave`        | Windows, macOS, Linux |
+
+### Adding a browser
+
+Feel free to add support for more browsers through a Pull Request. To get started, take a look at the existing browser definitions in [`/browsers`](browsers). The gist of adding a browser is simple. You need to figure out the Keychain credentials and provide a path resolution that works on Windows, macOS, and Linux.
+
+## String Decryption
+
+You can decrypt strings retrieved from your web browser using Havelock. Currently, there is only support for macOS.
+
+| Platform | Algorithm   | Supported | Source                                                                                                                  |
+| -------- | ----------- | --------- | ----------------------------------------------------------------------------------------------------------------------- |
+| Windows  | AES-256-GCM | No        | [`os_crypt_win.cc`](https://source.chromium.org/chromium/chromium/src/+/master:components/os_crypt/os_crypt_win.cc)     |
+| macOS    | AES-128-CBC | Yes       | [`os_crypt_mac.mm`](https://source.chromium.org/chromium/chromium/src/+/master:components/os_crypt/os_crypt_mac.mm)     |
+| Linux    | AES-128-CBC | Yes       | [`os_crypt_linux.cc`](https://source.chromium.org/chromium/chromium/src/+/master:components/os_crypt/os_crypt_linux.cc) |
+
 ## API
 
 The Havelock API is available in JavaScript. You can only use it from a Node.js environment.
@@ -35,8 +62,8 @@ explorer
     "Login Data",
     "logins"
   )
-  .then((value) => {
-    console.info(value);
+  .then((logins) => {
+    console.info(logins);
   })
   .catch((reason) => {
     console.error(reason);
@@ -48,8 +75,8 @@ There are also shorthands available for interesting files. You can achieve the s
 ```js
 explorer
   .getLoginsFromLoginDataFile(browser.chrome, "Default")
-  .then((value) => {
-    console.log(value);
+  .then((logins) => {
+    console.log(logins);
   })
   .catch((reason) => {
     console.error(reason);
@@ -86,37 +113,6 @@ explorer
     console.error(reason);
   });
 ```
-
-### Verified web browsers
-
-Every web browser using the same storage mechanism for user data is supported. These are the verified web browsers:
-
-| Name                 | API            | Platform(s)           |
-| -------------------- | -------------- | --------------------- |
-| Chromium             | `chromium`     | Windows, macOS, Linux |
-| Google Chrome Stable | `chrome`       | Windows, macOS, Linux |
-| Google Chrome Beta   | `chromeBeta`   | Linux                 |
-| Google Chrome Dev    | `chromeDev`    | Linux                 |
-| Google Chrome Canary | `chromeCanary` | Windows, macOS        |
-| Brave Stable         | `brave`        | Windows, macOS, Linux |
-
-#### Adding a browser
-
-Feel free to add support for more browsers through a Pull Request. To get started, take a look at the existing browser definitions in [`/browsers`](browsers). The gist of adding a browser is simple. You need to figure out the Keychain credentials and provide a path resolution that works on Windows, macOS, and Linux.
-
-### String decryption
-
-You can decrypt strings retrieved from your web browser using Havelock. Currently, there is only support for macOS.
-
-| Platform | Algorithm   | Supported | Source                                                                                                                  |
-| -------- | ----------- | --------- | ----------------------------------------------------------------------------------------------------------------------- |
-| Windows  | AES-256-GCM | No        | [`os_crypt_win.cc`](https://source.chromium.org/chromium/chromium/src/+/master:components/os_crypt/os_crypt_win.cc)     |
-| macOS    | AES-128-CBC | Yes       | [`os_crypt_mac.mm`](https://source.chromium.org/chromium/chromium/src/+/master:components/os_crypt/os_crypt_mac.mm)     |
-| Linux    | AES-128-CBC | No        | [`os_crypt_linux.cc`](https://source.chromium.org/chromium/chromium/src/+/master:components/os_crypt/os_crypt_linux.cc) |
-
-#### Windows and Linux
-
-There is no decryption support for Windows and Linux yet.
 
 ## CLI
 
