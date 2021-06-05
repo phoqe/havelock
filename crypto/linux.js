@@ -162,7 +162,7 @@ exports.decryptData = (browser, data) => {
         const iv = Buffer.alloc(IV_BLOCK_SIZE, "20", "hex");
         const decipher = crypto.createDecipheriv(DEC_ALGO, key, iv);
         const ciphertext = Buffer.from(data).toString("base64");
-        const rawCiphertext = ciphertext.substring(version);
+        const rawCiphertext = ciphertext.substring(version.length + 1);
         let plaintext = decipher.update(rawCiphertext, "base64", "utf8");
 
         plaintext += decipher.final("utf8");
