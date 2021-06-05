@@ -78,7 +78,7 @@ const createEncryptionKey = (browser, version) => {
           password, // password
           "saltysalt", // salt
           1, // iterations
-          128, // keylen
+          16, // keylen
           "sha1", // digest
           (error, key) => {
             if (error) {
@@ -118,7 +118,7 @@ exports.decryptData = (browser, data) => {
     }
 
     const dataString = data.toString();
-    let version = null;
+    let version;
 
     // Check that the incoming data was encrypted and with what version.
     // Credit card numbers are current legacy unencrypted data at the time of writing.
@@ -144,7 +144,7 @@ exports.decryptData = (browser, data) => {
         }
 
         const iv = Buffer.alloc(16, "20", "hex");
-        const decipher = crypto.createDecipheriv("aes-128-gcm", key, iv);
+        const decipher = crypto.createDecipheriv("aes-128-cbc", key, iv);
         const ciphertext = Buffer.from(data).toString("base64");
         const rawCiphertext = ciphertext.substring(version);
         let plaintext = decipher.update(rawCiphertext, "base64", "utf8");
