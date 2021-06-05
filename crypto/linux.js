@@ -21,10 +21,12 @@ const DEC_ALGO = "aes-128-cbc";
 const IV_BLOCK_SIZE = 16;
 
 /**
+ * Retrieve the password used in Chromium's cryptography logic, i.e., when encrypting and decrypting strings.
+ * The password is stored in a form of key storage solution.
  *
- * @param {object} browser
- * @param {string} version
- * @returns {Promise<string>}
+ * @param {object} browser Decides which service and account to use in the key storage solution.
+ * @param {string} version Determines whether we should retrieve the password through the key storage solution or just use the hardcoded password.
+ * @returns {Promise<string>} Resolved with the password string or rejected with an error.
  */
 const getPassword = (browser, version) => {
   return new Promise((resolve, reject) => {
@@ -63,6 +65,7 @@ const getPassword = (browser, version) => {
 };
 
 /**
+ * Create an encryption key for the specified `browser`.
  *
  * @param {object} browser
  * @param {string} version
@@ -114,6 +117,7 @@ const createEncryptionKey = (browser, version) => {
 };
 
 /**
+ * Decrypt data from a buffer to a plaintext string using the defined algorithm.
  *
  * @param {object} browser
  * @param {Buffer} data

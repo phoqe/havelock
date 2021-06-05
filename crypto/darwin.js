@@ -12,7 +12,6 @@ const KEY_SALT = "saltysalt";
 const KEY_ITERS = 1003;
 const KEY_LEN_BYTES = 16;
 const KEY_DIGEST = "sha1";
-const AES_128_BLOCK_SIZE = 16;
 
 // Decipher
 const DEC_ALGO = "aes-128-cbc";
@@ -21,14 +20,11 @@ const DEC_ALGO = "aes-128-cbc";
 const IV_BLOCK_SIZE = 16;
 
 /**
- * Retrieves the password used in Chromium’s cryptography logic, i.e. when encrypting and decrypting strings.
- * This password is stored in Keychain on macOS and is only available once the user has granted access.
+ * Retrieve the password used in Chromium's cryptography logic, i.e., when encrypting and decrypting strings.
+ * The password is stored in a form of key storage solution.
  *
- * The `browser` parameter decides which service and account to use, e.g. for Chromium it’s Chromium Safe Storage and
- * Chromium.
- *
- * @param browser {object}
- * @returns {Promise<string>}
+ * @param {object} browser Decides which service and account to use in the key storage solution.
+ * @returns {Promise<string>} Resolved with the password string or rejected with an error.
  */
 const getPassword = (browser) => {
   return new Promise((resolve, reject) => {
@@ -50,12 +46,10 @@ const getPassword = (browser) => {
 };
 
 /**
- * Creates an encryption key for the specified `browser` from an associated password retrieved from Keychain and an
- * existing salt.
+ * Create an encryption key for the specified `browser`.
  *
- * Access to Keychain is required to create an encryption key.
- *
- * @param browser {object}
+ * @param {object} browser
+ * @param {string} version
  * @returns {Promise<Buffer>}
  */
 const createEncryptionKey = (browser) => {
@@ -98,10 +92,10 @@ const createEncryptionKey = (browser) => {
 };
 
 /**
- * Decrypts data in a Buffer to a string using 128 bit AES with CBC.
+ * Decrypt data from a buffer to a plaintext string using the defined algorithm.
  *
- * @param browser {object}
- * @param data {Buffer}
+ * @param {object} browser
+ * @param {Buffer} data
  * @returns {Promise<string>}
  */
 exports.decrypt = (browser, data) => {
@@ -118,7 +112,6 @@ exports.decrypt = (browser, data) => {
     if (data.toString().indexOf(PASSWORD_V10) !== 0) {
       // If the prefix is not found then we'll assume we're dealing with old data.
       // It's saved as clear text and we'll return it directly.
-
       resolve(data);
 
       return;
