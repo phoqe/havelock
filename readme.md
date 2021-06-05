@@ -35,8 +35,8 @@ explorer
     "Login Data",
     "logins"
   )
-  .then((value) => {
-    console.info(value);
+  .then((logins) => {
+    console.info(logins);
   })
   .catch((reason) => {
     console.error(reason);
@@ -48,8 +48,8 @@ There are also shorthands available for interesting files. You can achieve the s
 ```js
 explorer
   .getLoginsFromLoginDataFile(browser.chrome, "Default")
-  .then((value) => {
-    console.log(value);
+  .then((logins) => {
+    console.log(logins);
   })
   .catch((reason) => {
     console.error(reason);
