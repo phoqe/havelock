@@ -4,6 +4,22 @@ const crypto = require("crypto");
 // Third-party modules
 const keytar = require("keytar");
 
+// Password Versions
+const PASSWORD_V10 = "v10";
+const PASSWORD_V11 = "v11";
+
+// Encryption Key
+const KEY_SALT = "saltysalt";
+const KEY_ITERS = 1;
+const KEY_LEN_BYTES = 16;
+const KEY_DIGEST = "sha1";
+
+// Decipher
+const DEC_ALGO = "aes-128-cbc";
+
+// Initialization Vector
+const IV_BLOCK_SIZE = 16;
+
 /**
  *
  * @param {object} browser
@@ -24,13 +40,13 @@ const getPassword = (browser, version) => {
       return;
     }
 
-    if (version === "v10") {
+    if (version === PASSWORD_V10) {
       resolve("peanuts");
 
       return;
     }
 
-    if (version === "v11") {
+    if (version === PASSWORD_V11) {
       const service = browser.keychain.service;
       const account = browser.keychain.account;
 
@@ -75,11 +91,11 @@ const createEncryptionKey = (browser, version) => {
         }
 
         crypto.pbkdf2(
-          password, // password
-          "saltysalt", // salt
-          1, // iterations
-          16, // keylen
-          "sha1", // digest
+          password,
+          KEY_SALT,
+          KEY_ITERS,
+          KEY_LEN_BYTES,
+          KEY_DIGEST,
           (error, key) => {
             if (error) {
               reject(error);
@@ -123,10 +139,10 @@ exports.decryptData = (browser, data) => {
     // Check that the incoming data was encrypted and with what version.
     // Credit card numbers are current legacy unencrypted data at the time of writing.
     // So false match with prefix won't happen.
-    if (dataString.startsWith("v10")) {
-      version = "v10";
-    } else if (dataString.startsWith("v11")) {
-      version = "v11";
+    if (dataString.startsWith(PASSWORD_V10)) {
+      version = PASSWORD_V10;
+    } else if (dataString.startsWith(PASSWORD_V11)) {
+      version = PASSWORD_V11;
     } else {
       // If the prefix is not found then we'll assume we're dealing with old data.
       // It's saved as clear text and we'll return it directly.
@@ -143,8 +159,8 @@ exports.decryptData = (browser, data) => {
           return;
         }
 
-        const iv = Buffer.alloc(16, "20", "hex");
-        const decipher = crypto.createDecipheriv("aes-128-cbc", key, iv);
+        const iv = Buffer.alloc(IV_BLOCK_SIZE, "20", "hex");
+        const decipher = crypto.createDecipheriv(DEC_ALGO, key, iv);
         const ciphertext = Buffer.from(data).toString("base64");
         const rawCiphertext = ciphertext.substring(version);
         let plaintext = decipher.update(rawCiphertext, "base64", "utf8");
