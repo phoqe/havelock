@@ -100,7 +100,7 @@ explorer
   .then((logins) => {
     logins.forEach((login) => {
       crypto
-        .decryptData(browser.chrome, login.password_value)
+        .decrypt(browser.chrome, login.password_value)
         .then((value) => {
           console.log(value);
         })

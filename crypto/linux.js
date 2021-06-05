@@ -119,7 +119,7 @@ const createEncryptionKey = (browser, version) => {
  * @param {Buffer} data
  * @returns {Promise<string>}
  */
-exports.decryptData = (browser, data) => {
+exports.decrypt = (browser, data) => {
   return new Promise((resolve, reject) => {
     if (!browser) {
       reject(new TypeError("No browser."));
