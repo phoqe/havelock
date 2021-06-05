@@ -1,28 +1,30 @@
+// Core modules
 const crypto = require("crypto");
+
+// Third-party modules
 const keytar = require("keytar");
 
-// General
-const ENC_VER_PREFIX = "v10";
-const SALT = "saltysalt";
-const AES_128_BLOCK_SIZE = 16;
+// Password Versions
+const PASSWORD_V10 = "v10";
 
-// PBKDF2
-const PBKDF2_ITERS = 1003;
-const PBKDF2_KEY_LEN = 16;
-const PBKDF2_DIG = "sha1";
+// Encryption Key
+const KEY_SALT = "saltysalt";
+const KEY_ITERS = 1003;
+const KEY_LEN_BYTES = 16;
+const KEY_DIGEST = "sha1";
 
 // Decipher
-const DEC_ALGO = "AES-128-CBC";
+const DEC_ALGO = "aes-128-cbc";
+
+// Initialization Vector
+const IV_BLOCK_SIZE = 16;
 
 /**
- * Retrieves the password used in Chromium’s cryptography logic, i.e. when encrypting and decrypting strings.
- * This password is stored in Keychain on macOS and is only available once the user has granted access.
+ * Retrieve the password used in Chromium's cryptography logic, i.e., when encrypting and decrypting strings.
+ * The password is stored in a form of key storage solution.
  *
- * The `browser` parameter decides which service and account to use, e.g. for Chromium it’s Chromium Safe Storage and
- * Chromium.
- *
- * @param browser {object}
- * @returns {Promise<string>}
+ * @param {object} browser Decides which service and account to use in the key storage solution.
+ * @returns {Promise<string>} Resolved with the password string or rejected with an error.
  */
 const getPassword = (browser) => {
   return new Promise((resolve, reject) => {
@@ -44,12 +46,10 @@ const getPassword = (browser) => {
 };
 
 /**
- * Creates an encryption key for the specified `browser` from an associated password retrieved from Keychain and an
- * existing salt.
+ * Create an encryption key for the specified `browser`.
  *
- * Access to Keychain is required to create an encryption key.
- *
- * @param browser {object}
+ * @param {object} browser
+ * @param {string} version
  * @returns {Promise<Buffer>}
  */
 const createEncryptionKey = (browser) => {
@@ -70,10 +70,10 @@ const createEncryptionKey = (browser) => {
 
         crypto.pbkdf2(
           password,
-          SALT,
-          PBKDF2_ITERS,
-          PBKDF2_KEY_LEN,
-          PBKDF2_DIG,
+          KEY_SALT,
+          KEY_ITERS,
+          KEY_LEN_BYTES,
+          KEY_DIGEST,
           (err, derivedKey) => {
             if (err) {
               reject(err);
@@ -92,13 +92,13 @@ const createEncryptionKey = (browser) => {
 };
 
 /**
- * Decrypts data in a Buffer to a string using 128 bit AES with CBC.
+ * Decrypt data from a buffer to a plaintext string using the defined algorithm.
  *
- * @param browser {object}
- * @param data {Buffer}
+ * @param {object} browser
+ * @param {Buffer} data
  * @returns {Promise<string>}
  */
-exports.decryptData = (browser, data) => {
+exports.decrypt = (browser, data) => {
   return new Promise((resolve, reject) => {
     if (!browser || !data) {
       reject();
@@ -106,7 +106,12 @@ exports.decryptData = (browser, data) => {
       return;
     }
 
-    if (data.toString().indexOf(ENC_VER_PREFIX) !== 0) {
+    // Check that the incoming data was encrypted and with what version.
+    // Credit card numbers are current legacy unencrypted data at the time of writing.
+    // So false match with prefix won't happen.
+    if (data.toString().indexOf(PASSWORD_V10) !== 0) {
+      // If the prefix is not found then we'll assume we're dealing with old data.
+      // It's saved as clear text and we'll return it directly.
       resolve(data);
 
       return;
@@ -120,10 +125,10 @@ exports.decryptData = (browser, data) => {
           return;
         }
 
-        const iv = Buffer.alloc(AES_128_BLOCK_SIZE, "20", "hex");
+        const iv = Buffer.alloc(IV_BLOCK_SIZE, "20", "hex");
         const decipher = crypto.createDecipheriv(DEC_ALGO, encryptionKey, iv);
         const ciphertext = Buffer.from(data).toString("base64");
-        const rawCiphertext = ciphertext.substring(ENC_VER_PREFIX.length + 1);
+        const rawCiphertext = ciphertext.substring(PASSWORD_V10.length + 1);
         let plaintext = decipher.update(rawCiphertext, "base64", "utf8");
 
         plaintext += decipher.final("utf8");
