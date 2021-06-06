@@ -7,7 +7,7 @@ exports.keychain = {
   account: "Chromium",
 };
 
-exports.getUserDataDirectoryPath = () => {
+exports.userDataDirectoryPath = () => {
   let userDataDirectoryPath;
 
   if (process.platform === "win32") {

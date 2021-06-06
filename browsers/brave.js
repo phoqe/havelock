@@ -7,7 +7,7 @@ exports.keychain = {
   account: "Brave",
 };
 
-exports.getUserDataDirectoryPath = () => {
+exports.userDataDirectoryPath = () => {
   let userDataDirectoryPath;
 
   if (process.platform === "win32") {
