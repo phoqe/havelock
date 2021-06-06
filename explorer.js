@@ -103,7 +103,6 @@ exports.dataFromFile = (filePath, table) => {
       return;
     }
 
-    // Check if the file exists and is accessible.
     fs.access(filePath, fs.constants.R_OK, (error) => {
       if (error) {
         reject(error);
