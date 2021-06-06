@@ -22,8 +22,19 @@ const DEC_ALGO = "aes-256-gcm";
  * @returns {Buffer}
  */
 const createEncryptionKey = () => {
-  return hkdf(KEY_SECRET, KEY_LEN, { salt: KEY_SALT, info: "info" });
+  return hkdf(KEY_SECRET, KEY_LEN, {
+    salt: KEY_SALT,
+    info: KEY_INFO,
+    hash: KEY_HASH,
+  });
 };
+
+/**
+ *
+ * @param {string} ciphertext
+ * @returns {string}
+ */
+const decryptWithDpApi = (ciphertext) => {};
 
 /**
  *
