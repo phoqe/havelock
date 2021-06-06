@@ -66,7 +66,7 @@ const writeToFile = (fileName, data) => {
  * Supply `type` to use typical data points.
  *
  * @param {string} type Type of data, e.g., `logins` or `urls`.
- * @param {Array} data Data to structure in a table. Must be an `Array`.
+ * @param {object[]} data Data to structure in a table.
  */
 const tabular = (type, data) => {
   switch (type) {
@@ -89,6 +89,7 @@ const tabular = (type, data) => {
 };
 
 /**
+ * Return the encrypted field for a type of data, e.g., for `logins` it's `password_value`.
  *
  * @param {string} type
  * @returns {string}
@@ -105,10 +106,12 @@ const encryptedFieldForType = (type) => {
 };
 
 /**
+ * Decrypt specified `rows` and return them in the same format but with the decrypted value.
  *
- * @param {object[]} rows
- * @param {object} browser
- * @param {string} type
+ * @param {object[]} rows Rows to decrypt. Must adhere to correct fields.
+ * @param {object} browser Browser to decrypt from.
+ * @param {string} type Type of data to decrypt.
+ * @returns {Promise<object[]>}
  */
 const decrypt = (rows, browser, type) => {
   return new Promise((resolve, reject) => {
