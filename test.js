@@ -5,7 +5,7 @@ const browser = havelock.browser;
 const crypto = havelock.crypto;
 
 explorer
-  .getDataFromUserDataDirectoryFile(
+  .dataFromUserDataDirectoryFile(
     browser.chrome,
     "Default",
     "Login Data",
