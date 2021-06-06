@@ -66,7 +66,7 @@ const writeToFile = (fileName, data) => {
  * Supply `type` to use typical data points.
  *
  * @param {string} type Type of data, e.g., `logins` or `urls`.
- * @param {Array} data Data to structure in a table. Must be an `Array`.
+ * @param {object[]} data Data to structure in a table.
  */
 const tabular = (type, data) => {
   switch (type) {
@@ -89,18 +89,111 @@ const tabular = (type, data) => {
 };
 
 /**
+ * Return the encrypted field for a type of data, e.g., for `logins` it's `password_value`.
+ *
+ * @param {string} type
+ * @returns {string}
+ */
+const encryptedFieldForType = (type) => {
+  switch (type) {
+    case "logins":
+      return "password_value";
+    case "cookies":
+      return "encrypted_value";
+    default:
+      return null;
+  }
+};
+
+/**
+ * Decrypt specified `rows` and return them in the same format but with the decrypted value.
+ *
+ * @param {object[]} rows Rows to decrypt. Must adhere to correct fields.
+ * @param {object} browser Browser to decrypt from.
+ * @param {string} type Type of data to decrypt.
+ * @returns {Promise<object[]>}
+ */
+const decrypt = (rows, browser, type) => {
+  return new Promise((resolve, reject) => {
+    if (!rows) {
+      reject(new TypeError("No rows."));
+
+      return;
+    }
+
+    const decs = [];
+
+    rows.forEach((row) => {
+      const encField = encryptedFieldForType(type);
+
+      decs.push(
+        havelock.crypto.decrypt(browser, row[encField]).then((plaintext) => {
+          return {
+            ...row,
+            [encField]: plaintext,
+          };
+        })
+      );
+    });
+
+    Promise.all(decs)
+      .then((decRows) => {
+        resolve(decRows);
+      })
+      .catch((reason) => {
+        reject(reason);
+      });
+  });
+};
+
+/**
  * Print `data` in multiple formats.
  * Format is deduced from `opts`.
  *
  * @param {string} type Type of data to print. Used to determine interesting data points.
  * @param {Array} data Data to print. Must be an `Array`.
  * @param {commander.OptionValues} opts Program options used to determine format type.
+ * @param {object} browser
  * @returns
  */
-const printData = (type, data, opts) => {
+const printData = (type, data, opts, browser) => {
   return new Promise((resolve, reject) => {
     if (!data.length) {
       reject();
+
+      return;
+    }
+
+    if (opts.decrypt) {
+      decrypt(data, browser, type)
+        .then((rows) => {
+          if (opts.tabular) {
+            tabular(type, rows);
+
+            resolve();
+
+            return;
+          }
+
+          if (opts.file) {
+            writeToFile(type, rows)
+              .then((filePath) => {
+                resolve(filePath);
+              })
+              .catch((reason) => {
+                reject(reason);
+              });
+
+            return;
+          }
+
+          console.info(rows);
+
+          resolve();
+        })
+        .catch((reason) => {
+          reject(reason);
+        });
 
       return;
     }
@@ -147,7 +240,7 @@ exports.logins = (browser, profile = "Default") => {
   explorer
     .loginsFromLoginDataFile(browser, profile)
     .then((logins) => {
-      printData("logins", logins, opts)
+      printData("logins", logins, opts, browser)
         .then((filePath) => {
           if (filePath) {
             success(filePath);
@@ -188,7 +281,7 @@ exports.cookies = (browser, profile = "Default") => {
   explorer
     .cookiesFromCookiesFile(browser, profile)
     .then((cookies) => {
-      printData("cookies", cookies, opts)
+      printData("cookies", cookies, opts, browser)
         .then((filePath) => {
           if (filePath) {
             success(filePath);
@@ -229,7 +322,7 @@ exports.urls = (browser, profile = "Default") => {
   explorer
     .urlsFromHistoryFile(browser, profile)
     .then((urls) => {
-      printData("urls", urls, opts)
+      printData("urls", urls, opts, browser)
         .then((filePath) => {
           if (filePath) {
             success(filePath);

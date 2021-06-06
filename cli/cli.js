@@ -19,6 +19,7 @@ program.description(package.description);
 
 program.option("-t, --tabular", "present data of interest in a table", false);
 program.option("-f, --file", "write requested data to file", false);
+program.option("-d, --decrypt", "decrypt fields known to be encrypted", false);
 
 /**
  * Actions
