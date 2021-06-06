@@ -106,10 +106,41 @@ const encryptedFieldForType = (type) => {
 
 /**
  *
- * @param {object[]} data
+ * @param {object[]} rows
+ * @param {object} browser
+ * @param {string} type
  */
-const decrypt = (rows) => {
-  return new Promise((resolve, reject) => []);
+const decrypt = (rows, browser, type) => {
+  return new Promise((resolve, reject) => {
+    if (!rows) {
+      reject(new TypeError("No rows."));
+
+      return;
+    }
+
+    const decs = [];
+
+    rows.forEach((row) => {
+      const encField = encryptedFieldForType(type);
+
+      decs.push(
+        havelock.crypto.decrypt(browser, row[encField]).then((plaintext) => {
+          return {
+            ...row,
+            [encField]: plaintext,
+          };
+        })
+      );
+    });
+
+    Promise.all(decs)
+      .then((decRows) => {
+        resolve(decRows);
+      })
+      .catch((reason) => {
+        reject(reason);
+      });
+  });
 };
 
 /**
@@ -131,30 +162,34 @@ const printData = (type, data, opts, browser) => {
     }
 
     if (opts.decrypt) {
-      const reqs = [];
+      decrypt(data, browser, type)
+        .then((rows) => {
+          if (opts.tabular) {
+            tabular(type, rows);
 
-      data.forEach((value) => {
-        const req = havelock.crypto
-          .decrypt(browser, value[encryptedFieldForType(type)])
-          .then((plaintext) => {
-            return {
-              ...value,
-              password_value: plaintext,
-            };
-          })
-          .catch((reason) => {
-            console.log(reason);
-          });
+            resolve();
 
-        reqs.push(req);
-      });
+            return;
+          }
 
-      Promise.all(reqs)
-        .then((value) => {
-          console.log(value);
+          if (opts.file) {
+            writeToFile(type, rows)
+              .then((filePath) => {
+                resolve(filePath);
+              })
+              .catch((reason) => {
+                reject(reason);
+              });
+
+            return;
+          }
+
+          console.info(rows);
+
+          resolve();
         })
         .catch((reason) => {
-          console.log(reason);
+          reject(reason);
         });
 
       return;
