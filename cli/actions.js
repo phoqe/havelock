@@ -89,18 +89,73 @@ const tabular = (type, data) => {
 };
 
 /**
+ *
+ * @param {string} type
+ * @returns {string}
+ */
+const encryptedFieldForType = (type) => {
+  switch (type) {
+    case "logins":
+      return "password_value";
+    case "cookies":
+      return "encrypted_value";
+    default:
+      return null;
+  }
+};
+
+/**
+ *
+ * @param {object[]} data
+ */
+const decrypt = (rows) => {
+  return new Promise((resolve, reject) => []);
+};
+
+/**
  * Print `data` in multiple formats.
  * Format is deduced from `opts`.
  *
  * @param {string} type Type of data to print. Used to determine interesting data points.
  * @param {Array} data Data to print. Must be an `Array`.
  * @param {commander.OptionValues} opts Program options used to determine format type.
+ * @param {object} browser
  * @returns
  */
-const printData = (type, data, opts) => {
+const printData = (type, data, opts, browser) => {
   return new Promise((resolve, reject) => {
     if (!data.length) {
       reject();
+
+      return;
+    }
+
+    if (opts.decrypt) {
+      const reqs = [];
+
+      data.forEach((value) => {
+        const req = havelock.crypto
+          .decrypt(browser, value[encryptedFieldForType(type)])
+          .then((plaintext) => {
+            return {
+              ...value,
+              password_value: plaintext,
+            };
+          })
+          .catch((reason) => {
+            console.log(reason);
+          });
+
+        reqs.push(req);
+      });
+
+      Promise.all(reqs)
+        .then((value) => {
+          console.log(value);
+        })
+        .catch((reason) => {
+          console.log(reason);
+        });
 
       return;
     }
@@ -147,7 +202,7 @@ exports.logins = (browser, profile = "Default") => {
   explorer
     .loginsFromLoginDataFile(browser, profile)
     .then((logins) => {
-      printData("logins", logins, opts)
+      printData("logins", logins, opts, browser)
         .then((filePath) => {
           if (filePath) {
             success(filePath);
@@ -188,7 +243,7 @@ exports.cookies = (browser, profile = "Default") => {
   explorer
     .cookiesFromCookiesFile(browser, profile)
     .then((cookies) => {
-      printData("cookies", cookies, opts)
+      printData("cookies", cookies, opts, browser)
         .then((filePath) => {
           if (filePath) {
             success(filePath);
@@ -229,7 +284,7 @@ exports.urls = (browser, profile = "Default") => {
   explorer
     .urlsFromHistoryFile(browser, profile)
     .then((urls) => {
-      printData("urls", urls, opts)
+      printData("urls", urls, opts, browser)
         .then((filePath) => {
           if (filePath) {
             success(filePath);
