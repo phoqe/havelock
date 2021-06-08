@@ -21,7 +21,7 @@ Feel free to add support for more browsers through a Pull Request. To get starte
 
 ## String Decryption
 
-You can decrypt strings retrieved from your web browser using Havelock. Currently, there is only support for macOS.
+You can decrypt strings retrieved from your web browser using Havelock.
 
 | Platform | Algorithm   | Supported | Source                                                                                                                  |
 | -------- | ----------- | --------- | ----------------------------------------------------------------------------------------------------------------------- |
