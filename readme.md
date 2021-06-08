@@ -35,7 +35,7 @@ The Havelock API is available in JavaScript. You can only use it from a Node.js 
 
 ### Installation
 
-Havelock is available as `havelock` in npm. Use your favorite package manager to install it to your Node.js project:
+Havelock is available as `havelock` in npm. Use your favorite package manager to install it for your Node.js project:
 
 ```sh
 yarn add havelock
@@ -116,7 +116,7 @@ explorer
 
 ## CLI
 
-Havelock is also available as a standalone CLI. It can be separately to execute commands on the local machine.
+Havelock is also available as a standalone CLI. It can be used separately to execute commands on the local machine.
 
 ### Installation
 
