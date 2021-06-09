@@ -238,7 +238,7 @@ exports.logins = (browser, profile = "Default") => {
   }
 
   explorer
-    .loginsFromLoginDataFile(browser, profile)
+    .logins(browser, profile)
     .then((logins) => {
       printData("logins", logins, opts, browser)
         .then((filePath) => {
@@ -279,7 +279,7 @@ exports.cookies = (browser, profile = "Default") => {
   }
 
   explorer
-    .cookiesFromCookiesFile(browser, profile)
+    .cookies(browser, profile)
     .then((cookies) => {
       printData("cookies", cookies, opts, browser)
         .then((filePath) => {
@@ -320,7 +320,7 @@ exports.urls = (browser, profile = "Default") => {
   }
 
   explorer
-    .urlsFromHistoryFile(browser, profile)
+    .urls(browser, profile)
     .then((urls) => {
       printData("urls", urls, opts, browser)
         .then((filePath) => {

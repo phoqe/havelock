@@ -142,7 +142,7 @@ exports.dataFromFile = (filePath, table) => {
  * @param table {string} The table to use in the `SELECT` statement, i.e. the table to extract data from.
  * @returns {Promise<Array>} The rows selected from `table`.
  */
-exports.dataFromUserDataDirectoryFile = (browser, profile, file, table) => {
+exports.dataFromUddFile = (browser, profile, file, table) => {
   if (!browser || !profile || !file || !table) {
     return;
   }
@@ -159,7 +159,7 @@ exports.dataFromUserDataDirectoryFile = (browser, profile, file, table) => {
  * @param profile {string} A profile where the user data of interest resides.
  * @returns {Promise<Array>} The rows selected from `logins`.
  */
-exports.loginsFromLoginDataFile = (browser, profile) => {
+exports.logins = (browser, profile) => {
   if (!browser || !profile) {
     return;
   }
@@ -180,7 +180,7 @@ exports.loginsFromLoginDataFile = (browser, profile) => {
  * @param profile {string} A profile where the user data of interest resides.
  * @returns {Promise<Array>} The rows selected from `cookies`.
  */
-exports.cookiesFromCookiesFile = (browser, profile) => {
+exports.cookies = (browser, profile) => {
   if (!browser || !profile) {
     return;
   }
@@ -201,7 +201,7 @@ exports.cookiesFromCookiesFile = (browser, profile) => {
  * @param profile {string} A profile where the user data of interest resides.
  * @returns {Promise<Array>} The rows selected from `urls`.
  */
-exports.urlsFromHistoryFile = (browser, profile) => {
+exports.urls = (browser, profile) => {
   if (!browser || !profile) {
     return;
   }

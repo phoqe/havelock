@@ -5,12 +5,7 @@ const browser = havelock.browser;
 const crypto = havelock.crypto;
 
 explorer
-  .dataFromUserDataDirectoryFile(
-    browser.chrome,
-    "Default",
-    "Login Data",
-    "logins"
-  )
+  .dataFromUddFile(browser.chrome, "Default", "Login Data", "logins")
   .then((logins) => {
     logins.forEach((login) => {
       crypto

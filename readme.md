@@ -56,12 +56,7 @@ const explorer = havelock.explorer;
 const browser = havelock.browser;
 
 explorer
-  .dataFromUserDataDirectoryFile(
-    browser.chrome,
-    "Default",
-    "Login Data",
-    "logins"
-  )
+  .dataFromUddFile(browser.chrome, "Default", "Login Data", "logins")
   .then((logins) => {
     console.info(logins);
   })
@@ -74,7 +69,7 @@ There are also shorthands available for interesting files. You can achieve the s
 
 ```js
 explorer
-  .loginsFromLoginDataFile(browser.chrome, "Default")
+  .logins(browser.chrome, "Default")
   .then((logins) => {
     console.log(logins);
   })
@@ -91,12 +86,7 @@ Havelock can decrypt passwords and credit cards numbers. Here’s an example of 
 const crypto = havelock.crypto;
 
 explorer
-  .dataFromUserDataDirectoryFile(
-    browser.chrome,
-    "Default",
-    "Login Data",
-    "logins"
-  )
+  .dataFromUddFile(browser.chrome, "Default", "Login Data", "logins")
   .then((logins) => {
     logins.forEach((login) => {
       crypto
