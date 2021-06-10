@@ -1,6 +1,3 @@
-// Core modules
-const fs = require("fs");
-
 // Custom modules
 const explorer = require("./explorer");
 const browser = require("./browser");
