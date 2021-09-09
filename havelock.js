@@ -1,4 +1,3 @@
-// Custom modules
 const explorer = require("./explorer");
 const browser = require("./browser");
 const crypto = require("./crypto");
