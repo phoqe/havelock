@@ -1,10 +1,11 @@
-// Core modules
 const path = require("path");
 const fs = require("fs");
 const os = require("os");
-
-// Third-party modules
 const sqlite3 = require("sqlite3");
+
+const package = require("./package.json");
+
+const TEMP_DIR_PREFIX = `${package.name}-`;
 
 /**
  * Copy data file to a temporary directory and try reading the file again.
@@ -22,7 +23,7 @@ const dataFromTempFile = (filePath, table) => {
       return;
     }
 
-    const prefix = path.join(os.tmpdir(), "havelock-");
+    const prefix = path.join(os.tmpdir(), TEMP_DIR_PREFIX);
 
     fs.mkdtemp(prefix, (error, dirPath) => {
       if (error) {
